@@ -3,6 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const { handleSignUp } = require("./handlers");
 
 const PORT = process.env.PORT || 4000;
 
@@ -29,6 +30,8 @@ express()
   //GET
 
   //POST
+
+  .post("/signup", handleSignUp)
 
   //PUT
 

@@ -4,13 +4,15 @@ import NavBar from "./Navbar";
 import RecipeIcon from "./RecipeSmall";
 
 const Results = () => {
-  <>
-    <NavBar />
-    <Recipes>
-      Here is a list of search results
-      <RecipeIcon />
-    </Recipes>
-  </>;
+  return (
+    <>
+      <NavBar />
+      <Recipes>
+        Here is a list of search results
+        <RecipeIcon />
+      </Recipes>
+    </>
+  );
 };
 
 const Recipes = styled.div``;
