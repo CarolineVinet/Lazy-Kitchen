@@ -27,4 +27,24 @@ const handleSignUp = async (req, res) => {
   client.close();
 };
 
-module.exports = { handleSignUp };
+const handleSignIn = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
+
+  await client.connect();
+  const db = client.db("lazychefproject");
+
+  const user = await db
+    .collection("lazyusers")
+    .findOne({ _id: req.query.email }, (err, result) => {
+      result
+        ? res.status(200).json({ status: 200, user: result })
+        : res.status(400).json({
+            status: 400,
+            data: "User not found. Please sign up!",
+          });
+    });
+
+  client.close();
+};
+
+module.exports = { handleSignUp, handleSignIn };
