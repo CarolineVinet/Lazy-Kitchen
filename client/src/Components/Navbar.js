@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const NavBar = () => {
-  return <TopNav>This is the Navbar</TopNav>;
+  const { currentUser } = useContext(CurrentUserContext);
+
+  return <TopNav>Hello {currentUser.firstName}</TopNav>;
 };
 
 const TopNav = styled.div``;

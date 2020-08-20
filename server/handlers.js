@@ -22,7 +22,16 @@ const handleSignUp = async (req, res) => {
     password: req.body.password,
   });
 
-  res.status(201).json({ firstName: req.body.firstName });
+  res.status(201).json({
+    user: {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      _id: req.body.email,
+      email: req.body.email,
+      username: req.body.username,
+      password: req.body.password,
+    },
+  });
 
   client.close();
 };
@@ -40,7 +49,6 @@ const handleSignIn = async (req, res) => {
         ? res.status(200).json({ status: 200, user: result })
         : res.status(400).json({
             status: 400,
-            data: "User not found. Please sign up!",
           });
     });
 

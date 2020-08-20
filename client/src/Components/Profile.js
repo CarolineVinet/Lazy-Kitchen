@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import NavBar from "./Navbar";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const Profile = () => {
+  const { currentUser } = useContext(CurrentUserContext);
+  console.log(currentUser);
   return (
     <>
       <NavBar />
-      <ProfilePage>This is the user profile</ProfilePage>
+      <ProfilePage>
+        {currentUser.firstName}
+        {""}
+        {currentUser.lastName}
+        This is the user profile
+      </ProfilePage>
     </>
   );
 };

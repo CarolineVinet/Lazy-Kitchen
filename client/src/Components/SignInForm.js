@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { Link, useHistory } from "react-router-dom";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const SignIn = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [hasError, setHasError] = React.useState(false);
+  const { setCurrentUser } = useContext(CurrentUserContext);
+  const history = useHistory();
+
   return (
     <Form>
       <Input
@@ -32,13 +38,24 @@ const SignIn = () => {
               return res.json();
             })
             .then((data) => {
-              console.log(data);
+              if (data.status === 400) {
+                setHasError(true);
+              } else if (data.status === 200) {
+                setCurrentUser(data.user);
+                history.push("/profile");
+              }
             });
         }}
       >
         {" "}
         Let's go!
       </Button>
+
+      {hasError ? (
+        <ErrorMessage>
+          User not found! <LinkDiv to="/">Sign up here!</LinkDiv>
+        </ErrorMessage>
+      ) : null}
     </Form>
   );
 };
@@ -53,5 +70,13 @@ const Form = styled.div`
 const Input = styled.input``;
 
 const Button = styled.button``;
+
+const ErrorMessage = styled.div`
+  color: red;
+`;
+
+const LinkDiv = styled(Link)`
+  text-decoration: none;
+`;
 
 export default SignIn;

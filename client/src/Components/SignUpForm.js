@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import { useHistory } from "react-router-dom";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const SignUp = () => {
   const [firstName, setFirstName] = React.useState("");
@@ -9,6 +11,8 @@ const SignUp = () => {
   const [email, setEmail] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const { setCurrentUser } = useContext(CurrentUserContext);
+  const history = useHistory();
   return (
     <Form>
       <TextField
@@ -61,6 +65,8 @@ const SignUp = () => {
             })
             .then((data) => {
               console.log("user created!");
+              setCurrentUser(data.user);
+              history.push("/profile");
             });
         }}
       >
