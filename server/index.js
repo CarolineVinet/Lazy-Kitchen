@@ -3,7 +3,11 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
-const { handleSignUp, handleSignIn } = require("./handlers");
+const {
+  handleSignUp,
+  handleSignIn,
+  handleGetBasicRecipe,
+} = require("./handlers");
 
 const PORT = process.env.PORT || 4000;
 
@@ -29,6 +33,7 @@ express()
 
   //GET
   .get("/signin", handleSignIn)
+  .get("/getbasicrecipe", handleGetBasicRecipe)
 
   //POST
 

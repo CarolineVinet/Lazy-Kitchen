@@ -11,8 +11,10 @@ const SignUp = () => {
   const [email, setEmail] = React.useState("");
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [existingUserError, setExistingUserError] = React.useState(false);
   const { setCurrentUser } = useContext(CurrentUserContext);
   const history = useHistory();
+
   return (
     <Form>
       <TextField
@@ -64,14 +66,24 @@ const SignUp = () => {
               return res.json();
             })
             .then((data) => {
-              console.log("user created!");
-              setCurrentUser(data.user);
-              history.push("/profile");
+              if (data.status === 400) {
+                setExistingUserError(true);
+              } else if (data.status === 201) {
+                console.log("user created!");
+                setCurrentUser(data.user);
+                history.push("/profile");
+              }
             });
         }}
       >
         Submit
       </SignUpButton>
+
+      {existingUserError ? (
+        <ErrorMessage>
+          Looks like you already have an account. Try signing in!
+        </ErrorMessage>
+      ) : null}
     </Form>
   );
 };
@@ -88,5 +100,7 @@ const SignUpButton = styled.button`
   width: 60px;
   height: 40px;
 `;
+
+const ErrorMessage = styled.div``;
 
 export default SignUp;

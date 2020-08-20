@@ -6,7 +6,8 @@ import { CurrentUserContext } from "./CurrentUserContext";
 const SignIn = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [hasError, setHasError] = React.useState(false);
+  const [userDoesntExist, setUserDoesntExist] = React.useState(false);
+  const [invalidPassword, setInvalidPassword] = React.useState(false);
   const { setCurrentUser } = useContext(CurrentUserContext);
   const history = useHistory();
 
@@ -26,7 +27,6 @@ const SignIn = () => {
       ></Input>
       <Button
         onClick={() => {
-          console.log("Retrieving your profile...");
           if (email === "" || password === "") {
             return;
           }
@@ -38,11 +38,13 @@ const SignIn = () => {
               return res.json();
             })
             .then((data) => {
-              if (data.status === 400) {
-                setHasError(true);
-              } else if (data.status === 200) {
+              if (data.status === 200) {
                 setCurrentUser(data.user);
-                history.push("/profile");
+                history.push("/homepage");
+              } else if (data.status === 400) {
+                setInvalidPassword(true);
+              } else if (data.status === 404) {
+                setUserDoesntExist(true);
               }
             });
         }}
@@ -51,9 +53,15 @@ const SignIn = () => {
         Let's go!
       </Button>
 
-      {hasError ? (
+      {userDoesntExist ? (
         <ErrorMessage>
           User not found! <LinkDiv to="/">Sign up here!</LinkDiv>
+        </ErrorMessage>
+      ) : null}
+
+      {invalidPassword ? (
+        <ErrorMessage>
+          The password you have entered is invalid. Please try again.
         </ErrorMessage>
       ) : null}
     </Form>
@@ -75,8 +83,6 @@ const ErrorMessage = styled.div`
   color: red;
 `;
 
-const LinkDiv = styled(Link)`
-  text-decoration: none;
-`;
+const LinkDiv = styled(Link)``;
 
 export default SignIn;
