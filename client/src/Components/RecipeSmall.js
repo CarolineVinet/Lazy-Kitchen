@@ -1,10 +1,26 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-const RecipeIcon = () => {
-  return <Icon>This is the small recipe li in the results ul </Icon>;
+const RecipeTile = ({ recipe }) => {
+  const imageSrc = recipe.image.includes("https://spoonacular.com")
+    ? recipe.image
+    : `https://spoonacular.com/recipeImages/${recipe.image}`;
+
+  return (
+    <Recipe>
+      <RecipeLink to={`/results/${recipe.id}`}>
+        <RecipeFormat>{recipe.title}</RecipeFormat>
+        <RecipeImage src={imageSrc}></RecipeImage>
+      </RecipeLink>
+    </Recipe>
+  );
 };
 
-const Icon = styled.div``;
+const Recipe = styled.div``;
+const RecipeFormat = styled.div``;
+const RecipeImage = styled.img``;
 
-export default RecipeIcon;
+const RecipeLink = styled(Link)``;
+
+export default RecipeTile;

@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import NavBar from "./Navbar";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { BasicResultsContext } from "./BasicResultsContext";
 
 const Homepage = () => {
+  const { setRecipeResults } = useContext(BasicResultsContext);
+  const [inputText, setInputText] = React.useState("");
+  const [ingredientInput, setIngredientInput] = React.useState("");
+  const history = useHistory();
+
   return (
     <>
       <NavBar></NavBar>
@@ -14,7 +20,7 @@ const Homepage = () => {
         Here you'll find a recipe
         <GetRecipe
           onClick={() => {
-            fetch("/getbasicrecipe", {
+            fetch(`/getbasicrecipe?search=${inputText}`, {
               method: "GET",
               headers: { "Content-Type": "application/json" },
             })
@@ -22,12 +28,46 @@ const Homepage = () => {
                 return res.json();
               })
               .then((data) => {
-                console.log(data.results);
+                setRecipeResults(data.results);
+                history.push("/results");
               });
           }}
         >
           Get me a recipe NOW!
         </GetRecipe>
+        <input
+          onChange={(event) => {
+            setInputText(event.target.value);
+          }}
+          type="text"
+        ></input>
+        {/* search by ingredient function below  */}
+        <div>
+          <input
+            placeholder="enter your ingredients here"
+            onChange={(event) => {
+              setIngredientInput(event.target.value);
+            }}
+            type="text"
+          ></input>
+          <button
+            onClick={() => {
+              fetch(`/getrecipebyingredients?search=${ingredientInput}`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+              })
+                .then((res) => {
+                  return res.json();
+                })
+                .then((data) => {
+                  setRecipeResults(data);
+                  history.push("/results");
+                });
+            }}
+          >
+            Show me what I can make NOW!
+          </button>
+        </div>
       </Home>
     </>
   );
@@ -40,5 +80,7 @@ const Button = styled.button``;
 const ProfileLink = styled(Link)``;
 
 const GetRecipe = styled.button``;
+
+const Results = styled.div``;
 
 export default Homepage;

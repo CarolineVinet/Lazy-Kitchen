@@ -7,6 +7,13 @@ const {
   handleSignUp,
   handleSignIn,
   handleGetBasicRecipe,
+  handleRecipeById,
+  handleFavorite,
+  handleUnfavorite,
+  handleGetAllFavorites,
+  handleRecipeByIngredients,
+  handleTriedIt,
+  handleGetUserHistory,
 } = require("./handlers");
 
 const PORT = process.env.PORT || 4000;
@@ -34,11 +41,19 @@ express()
   //GET
   .get("/signin", handleSignIn)
   .get("/getbasicrecipe", handleGetBasicRecipe)
+  .get("/getrecipe/:id", handleRecipeById)
+  .get("/getrecipebyingredients", handleRecipeByIngredients)
+  .get("/getallfavorites", handleGetAllFavorites)
+  .get("/getuserhistory", handleGetUserHistory)
 
   //POST
 
   .post("/signup", handleSignUp)
 
   //PUT
+
+  .put("/addfavorite", handleFavorite)
+  .put("/removefavorite", handleUnfavorite)
+  .put("/triedit", handleTriedIt)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));

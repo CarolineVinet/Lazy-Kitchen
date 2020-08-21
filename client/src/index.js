@@ -2,12 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./Components/App";
 import CurrentUserProvider from "./Components/CurrentUserContext";
+import BasicResultsProvider from "./Components/BasicResultsContext";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
     <CurrentUserProvider>
-      <App />
+      <BasicResultsProvider>
+        <App />
+      </BasicResultsProvider>
     </CurrentUserProvider>
   </React.StrictMode>,
   document.getElementById("root")

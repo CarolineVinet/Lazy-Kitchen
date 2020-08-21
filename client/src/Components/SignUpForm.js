@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import { useHistory } from "react-router-dom";
 import { CurrentUserContext } from "./CurrentUserContext";
 
@@ -17,36 +15,36 @@ const SignUp = () => {
 
   return (
     <Form>
-      <TextField
+      <Input
         onChange={(event) => {
           setFirstName(event.target.value);
         }}
         placeholder="First Name"
-      ></TextField>
-      <TextField
+      ></Input>
+      <Input
         onChange={(event) => {
           setLastName(event.target.value);
         }}
         placeholder="Last Name"
-      ></TextField>
-      <TextField
+      ></Input>
+      <Input
         onChange={(event) => {
           setEmail(event.target.value);
         }}
         placeholder="Email"
-      ></TextField>
-      <TextField
+      ></Input>
+      <Input
         onChange={(event) => {
           setUsername(event.target.value);
         }}
         placeholder="Username"
-      ></TextField>
-      <TextField
+      ></Input>
+      <Input
         onChange={(event) => {
           setPassword(event.target.value);
         }}
         placeholder="Password"
-      ></TextField>
+      ></Input>
 
       <SignUpButton
         onClick={() => {
@@ -60,6 +58,8 @@ const SignUp = () => {
               email: email,
               username: username,
               password: password,
+              favorites: [],
+              history: [],
             }),
           })
             .then((res) => {
@@ -94,6 +94,8 @@ const Form = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+const Input = styled.input``;
 
 const SignUpButton = styled.button`
   margin-top: 20px;
