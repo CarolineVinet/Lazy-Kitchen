@@ -8,42 +8,50 @@ import HistoryTile from "./HistoryTile";
 import DietModal from "./DietaryRestrictions";
 
 const Profile = () => {
-  const { currentUser } = useContext(CurrentUserContext);
+  const {
+    currentUser,
+    firstTimeModalVisible,
+    setFirstTimeModalVisible,
+  } = useContext(CurrentUserContext);
   const [userFavorites, setUserFavorites] = React.useState([]);
   const [userHistory, setUserHistory] = React.useState([]);
-  const [modalVisible, setModalVisible] = React.useState(false);
+  const [modalVisible, setModalVisible] = React.useState(firstTimeModalVisible);
 
   React.useEffect(() => {
-    fetch(`/getallfavorites?favorites=${currentUser.favorites}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => {
-        return response.json();
+    if (currentUser.favorites.length > 0) {
+      fetch(`/getallfavorites?favorites=${currentUser.favorites}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
       })
-      .then((data) => {
-        console.log("recipe array data :: ", data);
-        setUserFavorites(data);
-      });
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          console.log("recipe array data :: ", data);
+          setUserFavorites(data);
+        });
+    }
   }, [currentUser.favorites]);
 
   //////getting history stuff////
 
   React.useEffect(() => {
-    const recipedIds = currentUser.history.map((item) => {
-      return item.recipeId;
-    });
-
-    fetch(`/getuserhistory?history=${recipedIds}`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setUserHistory(data);
+    if (currentUser.history.length > 0) {
+      const recipedIds = currentUser.history.map((item) => {
+        return item.recipeId;
       });
+
+      fetch(`/getuserhistory?history=${recipedIds}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setUserHistory(data);
+        });
+    }
   }, [currentUser.history]);
 
   return (
@@ -73,6 +81,7 @@ const Profile = () => {
             <button
               onClick={() => {
                 setModalVisible(false);
+                setFirstTimeModalVisible(false);
               }}
             >
               X

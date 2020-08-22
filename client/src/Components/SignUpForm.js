@@ -10,7 +10,9 @@ const SignUp = () => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [existingUserError, setExistingUserError] = React.useState(false);
-  const { setCurrentUser } = useContext(CurrentUserContext);
+  const { setCurrentUser, setFirstTimeModalVisible } = useContext(
+    CurrentUserContext
+  );
   const history = useHistory();
 
   return (
@@ -62,18 +64,20 @@ const SignUp = () => {
               history: [],
               allergies: [],
               diet: [],
-              avoid: [],
+              avoid: "",
             }),
           })
             .then((res) => {
               return res.json();
             })
             .then((data) => {
+              console.log("RETURNING DATA SIGNUP LINE 74 ::", data);
               if (data.status === 400) {
                 setExistingUserError(true);
               } else if (data.status === 201) {
                 console.log("user created!");
                 setCurrentUser(data.user);
+                setFirstTimeModalVisible(true);
                 history.push("/profile");
               }
             });

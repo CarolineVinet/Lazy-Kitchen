@@ -32,8 +32,14 @@ const handleSignUp = async (req, res) => {
       email: req.body.email,
       username: req.body.username,
       password: req.body.password,
+      favorites: req.body.favorites,
+      history: req.body.history,
+      allergies: req.body.allergies,
+      diet: req.body.diet,
+      avoid: req.body.avoid,
     });
     res.status(201).json({
+      status: 201,
       user: {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -41,6 +47,11 @@ const handleSignUp = async (req, res) => {
         email: req.body.email,
         username: req.body.username,
         password: req.body.password,
+        favorites: req.body.favorites,
+        history: req.body.history,
+        allergies: req.body.allergies,
+        diet: req.body.diet,
+        avoid: req.body.avoid,
       },
     });
   }
