@@ -70,9 +70,12 @@ const handleSignIn = async (req, res) => {
 
 const handleGetBasicRecipe = (req, res) => {
   const query = req.query.search;
+  const diet = req.query.diet;
+  const intolerances = req.query.allergies;
+  const excludeIngredients = req.query.avoid;
 
   fetch(
-    `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${query}`,
+    `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${query}&diet=${diet}&intolerances=${intolerances}&excludeIngredients=${excludeIngredients}`,
     {
       method: "GET",
       headers: {
@@ -333,13 +336,11 @@ const handleUpdateUser = async (req, res) => {
     console.log(r.modifiedCount);
     assert.equal(1, r.matchedCount);
     assert.equal(1, r.modifiedCount);
-    res
-      .status(200)
-      .json({
-        allergies: req.body.allergies,
-        diet: req.body.diet,
-        avoid: req.body.avoid,
-      });
+    res.status(200).json({
+      allergies: req.body.allergies,
+      diet: req.body.diet,
+      avoid: req.body.avoid,
+    });
   } catch (e) {
     console.log(e);
     res.status(500).json(e);

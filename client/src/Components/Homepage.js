@@ -3,8 +3,10 @@ import styled from "styled-components";
 import NavBar from "./Navbar";
 import { Link, useHistory } from "react-router-dom";
 import { BasicResultsContext } from "./BasicResultsContext";
+import { CurrentUserContext } from "./CurrentUserContext";
 
 const Homepage = () => {
+  const { currentUser } = useContext(CurrentUserContext);
   const { setRecipeResults } = useContext(BasicResultsContext);
   const [inputText, setInputText] = React.useState("");
   const [ingredientInput, setIngredientInput] = React.useState("");
@@ -20,10 +22,13 @@ const Homepage = () => {
         Here you'll find a recipe
         <GetRecipe
           onClick={() => {
-            fetch(`/getbasicrecipe?search=${inputText}`, {
-              method: "GET",
-              headers: { "Content-Type": "application/json" },
-            })
+            fetch(
+              `/getbasicrecipe?search=${inputText}&diet=${currentUser.diet}&allergies=${currentUser.allergies}&avoid=${currentUser.avoid}`,
+              {
+                method: "GET",
+                headers: { "Content-Type": "application/json" },
+              }
+            )
               .then((res) => {
                 return res.json();
               })

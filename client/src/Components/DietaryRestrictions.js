@@ -38,7 +38,8 @@ const DietModal = () => {
               onChange={() => {
                 dietListOnChange("vegetarian");
               }}
-              type="checkbox"
+              type="radio"
+              name="diet"
             ></input>
             Vegetarian
           </CheckItem>
@@ -47,7 +48,8 @@ const DietModal = () => {
               onChange={() => {
                 dietListOnChange("vegan");
               }}
-              type="checkbox"
+              type="radio"
+              name="diet"
             ></input>
             Vegan
           </CheckItem>
@@ -56,7 +58,8 @@ const DietModal = () => {
               onChange={() => {
                 dietListOnChange("ovo vegetarian");
               }}
-              type="checkbox"
+              type="radio"
+              name="diet"
             ></input>
             Ovo-Vegetarian
           </CheckItem>
@@ -65,7 +68,8 @@ const DietModal = () => {
               onChange={() => {
                 dietListOnChange("lacto vegetarian");
               }}
-              type="checkbox"
+              type="radio"
+              name="diet"
             ></input>
             Lacto-Vegetarian
           </CheckItem>
@@ -74,9 +78,20 @@ const DietModal = () => {
               onChange={() => {
                 dietListOnChange("pescetarian");
               }}
-              type="checkbox"
+              type="radio"
+              name="diet"
             ></input>
             Pescetarian
+          </CheckItem>
+          <CheckItem>
+            <input
+              onChange={() => {
+                dietListOnChange("");
+              }}
+              type="radio"
+              name="diet"
+            ></input>
+            None
           </CheckItem>
         </div>
 

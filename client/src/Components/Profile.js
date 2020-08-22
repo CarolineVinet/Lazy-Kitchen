@@ -11,6 +11,7 @@ const Profile = () => {
   const { currentUser } = useContext(CurrentUserContext);
   const [userFavorites, setUserFavorites] = React.useState([]);
   const [userHistory, setUserHistory] = React.useState([]);
+  const [modalVisible, setModalVisible] = React.useState(false);
 
   React.useEffect(() => {
     fetch(`/getallfavorites?favorites=${currentUser.favorites}`, {
@@ -29,7 +30,6 @@ const Profile = () => {
   //////getting history stuff////
 
   React.useEffect(() => {
-    console.log("PROFILE LINE32 :: USER IS :", currentUser);
     const recipedIds = currentUser.history.map((item) => {
       return item.recipeId;
     });
@@ -53,13 +53,34 @@ const Profile = () => {
         <HomeLink to="/homepage">Homepage</HomeLink>
       </Button>
 
+      <Settings
+        onClick={(event) => {
+          event.preventDefault();
+          setModalVisible(true);
+        }}
+      >
+        Edit your preferences
+      </Settings>
+
       <ProfilePage>
         {currentUser.firstName}
         {""}
         {currentUser.lastName}
-        <div>
-          <DietModal />
-        </div>
+
+        {modalVisible ? (
+          <div>
+            {" "}
+            <button
+              onClick={() => {
+                setModalVisible(false);
+              }}
+            >
+              X
+            </button>{" "}
+            <DietModal />{" "}
+          </div>
+        ) : null}
+
         <Favorites>
           <p>Your Favorite recipes</p>
           <FavoriteList>
@@ -72,7 +93,6 @@ const Profile = () => {
           <div>Your history</div>
           {userHistory
             ? userHistory.map((triedrecipe) => {
-                console.log("this the tried recipe bb", triedrecipe);
                 return <HistoryTile recipe={triedrecipe} />;
               })
             : null}
@@ -85,6 +105,8 @@ const Profile = () => {
 const ProfilePage = styled.div``;
 
 const Button = styled.button``;
+
+const Settings = styled.button``;
 
 const HomeLink = styled(Link)``;
 
