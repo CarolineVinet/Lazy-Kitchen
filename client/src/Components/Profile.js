@@ -5,6 +5,7 @@ import { CurrentUserContext } from "./CurrentUserContext";
 import { Link } from "react-router-dom";
 import RecipeTile from "./RecipeSmall";
 import HistoryTile from "./HistoryTile";
+import DietModal from "./DietaryRestrictions";
 
 const Profile = () => {
   const { currentUser } = useContext(CurrentUserContext);
@@ -28,6 +29,7 @@ const Profile = () => {
   //////getting history stuff////
 
   React.useEffect(() => {
+    console.log("PROFILE LINE32 :: USER IS :", currentUser);
     const recipedIds = currentUser.history.map((item) => {
       return item.recipeId;
     });
@@ -55,7 +57,9 @@ const Profile = () => {
         {currentUser.firstName}
         {""}
         {currentUser.lastName}
-        This is the user profile
+        <div>
+          <DietModal />
+        </div>
         <Favorites>
           <p>Your Favorite recipes</p>
           <FavoriteList>

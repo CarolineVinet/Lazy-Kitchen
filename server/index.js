@@ -14,6 +14,7 @@ const {
   handleRecipeByIngredients,
   handleTriedIt,
   handleGetUserHistory,
+  handleUpdateUser,
 } = require("./handlers");
 
 const PORT = process.env.PORT || 4000;
@@ -55,5 +56,6 @@ express()
   .put("/addfavorite", handleFavorite)
   .put("/removefavorite", handleUnfavorite)
   .put("/triedit", handleTriedIt)
+  .put("/updateuser", handleUpdateUser)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));

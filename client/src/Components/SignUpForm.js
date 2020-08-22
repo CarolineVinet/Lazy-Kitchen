@@ -60,6 +60,9 @@ const SignUp = () => {
               password: password,
               favorites: [],
               history: [],
+              allergies: [],
+              diet: [],
+              avoid: [],
             }),
           })
             .then((res) => {

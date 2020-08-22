@@ -312,6 +312,40 @@ const handleGetUserHistory = async (req, res) => {
   });
 };
 
+const handleUpdateUser = async (req, res) => {
+  try {
+    const client = await MongoClient(MONGO_URI, options);
+
+    await client.connect();
+    const db = client.db("lazychefproject");
+
+    const query = { _id: req.body.userId };
+
+    const newValues = {
+      $set: {
+        allergies: req.body.allergies,
+        diet: req.body.diet,
+        avoid: req.body.avoid,
+      },
+    };
+
+    const r = await db.collection("lazyusers").updateOne(query, newValues);
+    console.log(r.modifiedCount);
+    assert.equal(1, r.matchedCount);
+    assert.equal(1, r.modifiedCount);
+    res
+      .status(200)
+      .json({
+        allergies: req.body.allergies,
+        diet: req.body.diet,
+        avoid: req.body.avoid,
+      });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(e);
+  }
+};
+
 module.exports = {
   handleSignUp,
   handleSignIn,
@@ -323,4 +357,5 @@ module.exports = {
   handleRecipeByIngredients,
   handleTriedIt,
   handleGetUserHistory,
+  handleUpdateUser,
 };
