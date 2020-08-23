@@ -4,6 +4,7 @@ const { MONGO_URI } = process.env;
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
 const assert = require("assert");
+const moment = require("moment");
 
 const options = {
   useNewUrlParser: true,
@@ -81,12 +82,19 @@ const handleSignIn = async (req, res) => {
 
 const handleGetBasicRecipe = (req, res) => {
   const query = req.query.search;
-  const diet = req.query.diet;
-  const intolerances = req.query.allergies;
-  const excludeIngredients = req.query.avoid;
+  const diet = req.query.diet ? `&diet=${req.query.diet}` : "";
+  const intolerances = req.query.allergies
+    ? `&intolerances=${req.query.allergies}`
+    : "";
+  const excludeIngredients = req.query.avoid
+    ? `&excludeIngredients=${req.query.avoid}`
+    : "";
+  const lazyState = req.query.lazy;
+
+  console.log("diet stuff :: ", diet, intolerances, excludeIngredients);
 
   fetch(
-    `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${query}&diet=${diet}&intolerances=${intolerances}&excludeIngredients=${excludeIngredients}`,
+    `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${query}${diet}${intolerances}${excludeIngredients}`,
     {
       method: "GET",
       headers: {
@@ -100,7 +108,28 @@ const handleGetBasicRecipe = (req, res) => {
       return response.json();
     })
     .then((data) => {
-      res.status(200).json(data);
+      console.log(typeof data);
+      const results = data.results;
+
+      if (req.query.lazy === "energized") {
+        results.sort((a, b) => {
+          return b.readyInMinutes - a.readyInMinutes;
+        });
+        res.status(200).json(results);
+      } else if (req.query.lazy === "tired") {
+        results.sort((a, b) => {
+          return a.readyInMinutes - b.readyInMinutes;
+        });
+        res.status(200).json(results);
+      } else if (req.query.lazy === "deadtired") {
+        const newData = results.filter((item) => item.readyInMinutes <= 20);
+        newData.sort((a, b) => {
+          return a.readyInMinutes - b.readyInMinutes;
+        });
+        res.status(200).json(newData);
+      } else {
+        res.status(200).json(results);
+      }
     });
 };
 
@@ -125,11 +154,22 @@ const handleRecipeById = (req, res) => {
 };
 
 const handleRecipeByIngredients = (req, res) => {
+  const resultsArr = [];
   try {
     const ingredients = req.query.search;
+    console.log("diet stuff line 159 :: ", req.query);
+    const diet = req.query.diet ? `&diet=${req.query.diet}` : "";
+    const intolerances = req.query.allergies
+      ? `&intolerances=${req.query.allergies}`
+      : "";
+    const excludeIngredients = req.query.avoid
+      ? `&excludeIngredients=${req.query.avoid}`
+      : "";
+
+    console.log("diet stuff :: ", diet, intolerances, excludeIngredients);
 
     fetch(
-      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?number=10&ranking=1&ignorePantry=false&ingredients=${ingredients}`,
+      `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/searchComplex?number=12&ranking=1&ignorePantry=false&includeIngredients=${ingredients}${diet}${intolerances}${excludeIngredients}`,
       {
         method: "GET",
         headers: {
@@ -144,7 +184,66 @@ const handleRecipeByIngredients = (req, res) => {
         return response.json();
       })
       .then((data) => {
-        res.status(200).json(data);
+        console.log("first success", data.results.length);
+
+        if (data.results.length === 0) {
+          res.status(200).json([]);
+        }
+
+        return new Promise((resolve) => {
+          let count = 0;
+
+          data.results.forEach((item) => {
+            fetch(
+              `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${item.id}/information`,
+              {
+                method: "GET",
+                headers: {
+                  "x-rapidapi-host":
+                    "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+                  "x-rapidapi-key":
+                    "0743ec8629mshf67977e8c63b981p158834jsn37aa89ebfd81",
+                },
+              }
+            )
+              .then((response) => {
+                return response.json();
+              })
+              .then((responseData) => {
+                if (responseData.id) {
+                  resultsArr.push(responseData);
+                }
+                count++;
+                console.log("success number :: ", count);
+
+                if (count >= data.results.length) {
+                  resolve();
+                }
+              });
+          });
+        }).then(() => {
+          const results = resultsArr;
+          console.log("final success");
+          if (req.query.lazy === "energized") {
+            results.sort((a, b) => {
+              return b.readyInMinutes - a.readyInMinutes;
+            });
+            res.status(200).json(results);
+          } else if (req.query.lazy === "tired") {
+            results.sort((a, b) => {
+              return a.readyInMinutes - b.readyInMinutes;
+            });
+            res.status(200).json(results);
+          } else if (req.query.lazy === "deadtired") {
+            const newData = results.filter((item) => item.readyInMinutes <= 20);
+            newData.sort((a, b) => {
+              return a.readyInMinutes - b.readyInMinutes;
+            });
+            res.status(200).json(newData);
+          } else {
+            res.status(200).json(results);
+          }
+        });
       });
   } catch (e) {
     console.log("error :: ", e);
@@ -321,7 +420,6 @@ const handleGetUserHistory = async (req, res) => {
         });
     });
   }).then(() => {
-    console.log("user history recipes :: ", historyArr.length, historyArr);
     res.status(200).json(historyArr);
   });
 };
@@ -334,6 +432,8 @@ const handleUpdateUser = async (req, res) => {
     const db = client.db("lazychefproject");
 
     const query = { _id: req.body.userId };
+
+    console.log("user update line 435 :: ", req.body);
 
     const newValues = {
       $set: {
@@ -358,6 +458,35 @@ const handleUpdateUser = async (req, res) => {
   }
 };
 
+const handleGetAllReviews = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
+
+  await client.connect();
+  const db = client.db("lazychefproject");
+
+  const reviews = await db.collection("reviews").find().toArray();
+
+  console.log("handlers line 469 ::: ", reviews);
+  res.status(200).json(reviews);
+};
+
+const handleAddReview = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
+
+  await client.connect();
+  const db = client.db("lazychefproject");
+
+  const newReview = {
+    author: req.body.author,
+    recipeId: req.body.recipeId,
+    body: req.body.body,
+    rating: req.body.rating,
+    date: moment().format("h:mm a , MMMM Do YYYY"),
+  };
+  await db.collection("reviews").insertOne(newReview);
+  res.status(201).json(newReview);
+};
+
 module.exports = {
   handleSignUp,
   handleSignIn,
@@ -370,4 +499,6 @@ module.exports = {
   handleTriedIt,
   handleGetUserHistory,
   handleUpdateUser,
+  handleGetAllReviews,
+  handleAddReview,
 };

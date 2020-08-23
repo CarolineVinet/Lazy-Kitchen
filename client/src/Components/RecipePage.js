@@ -4,12 +4,16 @@ import NavBar from "./Navbar";
 import { useParams, Link } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { CurrentUserContext } from "./CurrentUserContext";
+import { ReviewsContext } from "./ReviewsContext";
+import ReviewTile from "./ReviewTile";
+import ReviewSection from "./LeaveReview";
 
 const RecipePage = () => {
   const [currentRecipe, setCurrentRecipe] = React.useState({});
   const { id } = useParams();
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const [toggleHeart, setToggleHeart] = React.useState(false);
+  const { reviews, setReviews } = useContext(ReviewsContext);
 
   React.useEffect(() => {
     fetch(`/getrecipe/${id}`, {
@@ -143,6 +147,15 @@ const RecipePage = () => {
           </HatedIt>
           .
         </p>
+        <Rating>
+          <div>See what other users thought of this recipe</div>
+          {reviews.map((review) => {
+            if (review.recipeId === parseInt(id)) {
+              return <ReviewTile review={review} />;
+            }
+          })}
+        </Rating>
+        <ReviewSection recipeId={parseInt(id)} />
       </Recipe>
     </>
   );
@@ -165,5 +178,7 @@ const UnfavoriteIt = styled.button``;
 const LovedIt = styled.button``;
 
 const HatedIt = styled.button``;
+
+const Rating = styled.div``;
 
 export default RecipePage;

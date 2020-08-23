@@ -4,12 +4,18 @@ import App from "./Components/App";
 import CurrentUserProvider from "./Components/CurrentUserContext";
 import BasicResultsProvider from "./Components/BasicResultsContext";
 import * as serviceWorker from "./serviceWorker";
+import LazyContextProvider from "./Components/LazyContext";
+import ReviewsProvider from "./Components/ReviewsContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <CurrentUserProvider>
       <BasicResultsProvider>
-        <App />
+        <LazyContextProvider>
+          <ReviewsProvider>
+            <App />
+          </ReviewsProvider>
+        </LazyContextProvider>
       </BasicResultsProvider>
     </CurrentUserProvider>
   </React.StrictMode>,

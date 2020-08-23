@@ -194,7 +194,7 @@ const DietModal = () => {
         <button
           onClick={(event) => {
             event.preventDefault();
-            console.log(dietList);
+
             fetch("/updateuser", {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
@@ -209,6 +209,7 @@ const DietModal = () => {
                 return response.json();
               })
               .then((data) => {
+                console.log("dietary restrictions result line 212 :: ", data);
                 setCurrentUser({
                   ...currentUser,
                   allergies: data.allergies,

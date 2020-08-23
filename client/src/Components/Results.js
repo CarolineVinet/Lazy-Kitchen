@@ -7,6 +7,16 @@ import { Link } from "react-router-dom";
 
 const Results = () => {
   const { recipeResults } = useContext(BasicResultsContext);
+  const [hasResults, setHasResults] = React.useState(false);
+
+  React.useEffect(() => {
+    console.log(recipeResults);
+    if (recipeResults.length > 0) {
+      setHasResults(true);
+    } else {
+      setHasResults(false);
+    }
+  }, [recipeResults]);
 
   return (
     <>
@@ -19,9 +29,16 @@ const Results = () => {
       </Button>
       <Recipes>
         Here is a list of search results
-        {recipeResults.map((recipe) => {
-          return <RecipeTile key={recipe.id} recipe={recipe} />;
-        })}
+        {hasResults ? (
+          recipeResults.map((recipe) => {
+            return <RecipeTile key={recipe.id} recipe={recipe} />;
+          })
+        ) : (
+          <NoResults>
+            We're sorry, we couldn't find a recipe based on the search criteria
+            you entered. Maybe try something different..
+          </NoResults>
+        )}
       </Recipes>
     </>
   );
@@ -33,5 +50,8 @@ const Button = styled.button``;
 
 const HomeLink = styled(Link)``;
 const ProfileLink = styled(Link)``;
+const NoResults = styled.div`
+  color: red;
+`;
 
 export default Results;

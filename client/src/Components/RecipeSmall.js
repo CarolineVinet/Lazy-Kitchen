@@ -3,14 +3,16 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const RecipeTile = ({ recipe }) => {
-  const imageSrc = recipe.image.includes("https://spoonacular.com")
-    ? recipe.image
-    : `https://spoonacular.com/recipeImages/${recipe.image}`;
+  const imageSrc =
+    recipe.image && recipe.image.includes("https://spoonacular.com")
+      ? recipe.image
+      : `https://spoonacular.com/recipeImages/${recipe.image}`;
 
   return (
     <Recipe>
       <RecipeLink to={`/results/${recipe.id}`}>
         <RecipeFormat>{recipe.title}</RecipeFormat>
+        <RecipeTime>Prep Time : {recipe.readyInMinutes}mins.</RecipeTime>
         <RecipeImage src={imageSrc}></RecipeImage>
       </RecipeLink>
     </Recipe>
@@ -19,6 +21,7 @@ const RecipeTile = ({ recipe }) => {
 
 const Recipe = styled.div``;
 const RecipeFormat = styled.div``;
+const RecipeTime = styled.div``;
 const RecipeImage = styled.img``;
 
 const RecipeLink = styled(Link)``;

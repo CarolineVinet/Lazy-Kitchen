@@ -4,12 +4,15 @@ import NavBar from "./Navbar";
 import { Link, useHistory } from "react-router-dom";
 import { BasicResultsContext } from "./BasicResultsContext";
 import { CurrentUserContext } from "./CurrentUserContext";
+import LazyFilter from "./LazyFilter";
+import { LazyContext } from "./LazyContext";
 
 const Homepage = () => {
   const { currentUser } = useContext(CurrentUserContext);
   const { setRecipeResults } = useContext(BasicResultsContext);
   const [inputText, setInputText] = React.useState("");
   const [ingredientInput, setIngredientInput] = React.useState("");
+  const { lazyFilter } = useContext(LazyContext);
   const history = useHistory();
 
   return (
@@ -23,7 +26,7 @@ const Homepage = () => {
         <GetRecipe
           onClick={() => {
             fetch(
-              `/getbasicrecipe?search=${inputText}&diet=${currentUser.diet}&allergies=${currentUser.allergies}&avoid=${currentUser.avoid}`,
+              `/getbasicrecipe?search=${inputText}&diet=${currentUser.diet}&allergies=${currentUser.allergies}&avoid=${currentUser.avoid}&lazy=${lazyFilter}`,
               {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
@@ -33,7 +36,7 @@ const Homepage = () => {
                 return res.json();
               })
               .then((data) => {
-                setRecipeResults(data.results);
+                setRecipeResults(data);
                 history.push("/results");
               });
           }}
@@ -46,6 +49,7 @@ const Homepage = () => {
           }}
           type="text"
         ></input>
+        <LazyFilter />
         {/* search by ingredient function below  */}
         <div>
           <input
@@ -57,14 +61,22 @@ const Homepage = () => {
           ></input>
           <button
             onClick={() => {
-              fetch(`/getrecipebyingredients?search=${ingredientInput}`, {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-              })
+              console.log("diet stuff ", currentUser);
+              fetch(
+                `/getrecipebyingredients?search=${ingredientInput}&diet=${currentUser.diet}&allergies=${currentUser.allergies}&avoid=${currentUser.avoid}&lazy=${lazyFilter}`,
+                {
+                  method: "GET",
+                  headers: { "Content-Type": "application/json" },
+                }
+              )
                 .then((res) => {
                   return res.json();
                 })
                 .then((data) => {
+                  console.log(
+                    "data being returned from BE double search ::",
+                    data
+                  );
                   setRecipeResults(data);
                   history.push("/results");
                 });
