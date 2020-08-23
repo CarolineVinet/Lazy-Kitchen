@@ -13,10 +13,12 @@ import RecipePage from "./RecipePage";
 import SignIn from "./SignInForm";
 import Results from "./Results";
 import FourOhFour from "./FourOhFour";
+import GlobalStyles from "./GlobalStyles";
 
 function App() {
   return (
     <Router>
+      <GlobalStyles />
       <Switch>
         <Route exact path="/">
           <Gate />
