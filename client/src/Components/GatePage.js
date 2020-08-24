@@ -49,13 +49,12 @@ const Text = styled.div`
   width: 30%;
   position: relative;
   left: 35%;
-  top: 10%;
+  top: 5%;
 `;
 
 const HOne = styled.h1`
-  font-size: 60px;
-
-  margin-bottom: 60px;
+  font-size: 55px;
+  margin-bottom: 40px;
   background: transparent;
 `;
 
@@ -63,20 +62,20 @@ const Intro = styled.p`
   text-align: center;
   margin-top: 15px;
   margin-bottom: 15px;
-  font-size: 28px;
+  font-size: 25px;
 `;
 
 const Introo = styled.p`
   text-align: center;
   margin-top: 25px;
   margin-bottom: 25px;
-  font-size: 22px;
+  font-size: 20px;
 `;
 
 const HTwo = styled.p`
   text-align: center;
   margin-top: 15px;
-  font-size: 28px;
+  font-size: 25px;
 `;
 
 const Instructions = styled.p`
@@ -104,7 +103,7 @@ const LinkDiv = styled(Link)`
 `;
 
 const SigninRedirect = styled.p`
-  font-size: 18px;
+  font-size: 16px;
   margin-top: 15px;
   margin-bottom: 15px;
 `;

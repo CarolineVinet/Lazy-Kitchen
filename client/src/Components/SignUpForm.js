@@ -24,6 +24,8 @@ const SignUp = () => {
         required
         onChange={(event) => {
           setFirstName(event.target.value);
+          setExistingUserError(false);
+          setAllFieldsNotFilledError(false);
         }}
         placeholder="First Name"
         value={firstName}
@@ -32,6 +34,8 @@ const SignUp = () => {
         required
         onChange={(event) => {
           setLastName(event.target.value);
+          setExistingUserError(false);
+          setAllFieldsNotFilledError(false);
         }}
         placeholder="Last Name"
         value={lastName}
@@ -40,6 +44,8 @@ const SignUp = () => {
         required
         onChange={(event) => {
           setEmail(event.target.value);
+          setExistingUserError(false);
+          setAllFieldsNotFilledError(false);
         }}
         placeholder="Email"
         value={email}
@@ -48,6 +54,8 @@ const SignUp = () => {
         required
         onChange={(event) => {
           setUsername(event.target.value);
+          setExistingUserError(false);
+          setAllFieldsNotFilledError(false);
         }}
         placeholder="Username"
         value={username}
@@ -57,6 +65,8 @@ const SignUp = () => {
         type="password"
         onChange={(event) => {
           setPassword(event.target.value);
+          setExistingUserError(false);
+          setAllFieldsNotFilledError(false);
         }}
         placeholder="Password"
         value={password}
@@ -131,7 +141,6 @@ const Form = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 10px;
 `;
 
 const Input = styled.input`

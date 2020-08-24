@@ -6,6 +6,7 @@ import { BasicResultsContext } from "./BasicResultsContext";
 import { CurrentUserContext } from "./CurrentUserContext";
 import LazyFilter from "./LazyFilter";
 import { LazyContext } from "./LazyContext";
+import homebackground from "../assets/homebackground.jpg";
 
 const Homepage = () => {
   const { currentUser } = useContext(CurrentUserContext);
@@ -17,86 +18,252 @@ const Homepage = () => {
 
   return (
     <>
-      <NavBar></NavBar>
-      <Button>
-        <ProfileLink to="/profile"> My Profile</ProfileLink>
-      </Button>
-      <Home>
-        Here you'll find a recipe
-        <GetRecipe
-          onClick={() => {
-            fetch(
-              `/getbasicrecipe?search=${inputText}&diet=${currentUser.diet}&allergies=${currentUser.allergies}&avoid=${currentUser.avoid}&lazy=${lazyFilter}`,
-              {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-              }
-            )
-              .then((res) => {
-                return res.json();
-              })
-              .then((data) => {
-                setRecipeResults(data);
-                history.push("/results");
-              });
-          }}
-        >
-          Get me a recipe NOW!
-        </GetRecipe>
-        <input
-          onChange={(event) => {
-            setInputText(event.target.value);
-          }}
-          type="text"
-        ></input>
-        <LazyFilter />
-        {/* search by ingredient function below  */}
-        <div>
-          <input
-            placeholder="enter your ingredients here"
-            onChange={(event) => {
-              setIngredientInput(event.target.value);
-            }}
-            type="text"
-          ></input>
-          <button
-            onClick={() => {
-              console.log("diet stuff ", currentUser);
-              fetch(
-                `/getrecipebyingredients?search=${ingredientInput}&diet=${currentUser.diet}&allergies=${currentUser.allergies}&avoid=${currentUser.avoid}&lazy=${lazyFilter}`,
-                {
-                  method: "GET",
-                  headers: { "Content-Type": "application/json" },
-                }
-              )
-                .then((res) => {
-                  return res.json();
-                })
-                .then((data) => {
-                  console.log(
-                    "data being returned from BE double search ::",
-                    data
-                  );
-                  setRecipeResults(data);
-                  history.push("/results");
-                });
-            }}
-          >
-            Show me what I can make NOW!
-          </button>
-        </div>
-      </Home>
+      <Body>
+        <NavBar></NavBar>
+        <Button>
+          <ProfileLink to="/profile"> My Profile</ProfileLink>
+        </Button>
+        <BigTitle>Recipe Finder</BigTitle>
+        <Text>
+          <Title>Two easy ways to get inspired</Title>
+          <SearchesDiv>
+            <SearchOne>
+              <HThree>Quick Search</HThree>
+              <Instructions>
+                Craving something? <br></br> Have a specific dish in mind?
+                <br></br>
+                Enter at least one keyword to launch your search.
+              </Instructions>
+              {/* <Small>
+                ex: spicy <Span> -or- </Span> pasta
+              </Small> */}
+              <Input
+                placeholder=" e.i: lasagna"
+                onChange={(event) => {
+                  setInputText(event.target.value);
+                }}
+                type="text"
+              ></Input>
+              <br></br>
+              <GetRecipe
+                onClick={() => {
+                  fetch(
+                    `/getbasicrecipe?search=${inputText}&diet=${currentUser.diet}&allergies=${currentUser.allergies}&avoid=${currentUser.avoid}&lazy=${lazyFilter}`,
+                    {
+                      method: "GET",
+                      headers: { "Content-Type": "application/json" },
+                    }
+                  )
+                    .then((res) => {
+                      return res.json();
+                    })
+                    .then((data) => {
+                      setRecipeResults(data);
+                      history.push("/results");
+                    });
+                }}
+              >
+                Get me a recipe NOW!
+              </GetRecipe>
+            </SearchOne>
+
+            <SearchTwo>
+              <HThree>Search by ingredients</HThree>
+              <Instructions>
+                Looking to empty out your fridge? <br></br>
+                Enter the ingredients you have on hand <br></br>(separated by
+                comas) and see what you can create!
+              </Instructions>
+              {/* <Small>ex: milk, eggs, flour</Small> */}
+              <IngredientInput
+                rows="4"
+                cols="30"
+                placeholder=" e.i:  milk, eggs, flour, etc"
+                onChange={(event) => {
+                  setIngredientInput(event.target.value);
+                }}
+                type="text"
+              ></IngredientInput>
+              <br></br>
+              <GetRecipe
+                onClick={() => {
+                  console.log("diet stuff ", currentUser);
+                  fetch(
+                    `/getrecipebyingredients?search=${ingredientInput}&diet=${currentUser.diet}&allergies=${currentUser.allergies}&avoid=${currentUser.avoid}&lazy=${lazyFilter}`,
+                    {
+                      method: "GET",
+                      headers: { "Content-Type": "application/json" },
+                    }
+                  )
+                    .then((res) => {
+                      return res.json();
+                    })
+                    .then((data) => {
+                      console.log(
+                        "data being returned from BE double search ::",
+                        data
+                      );
+                      setRecipeResults(data);
+                      history.push("/results");
+                    });
+                }}
+              >
+                Show me what I can make NOW!
+              </GetRecipe>
+            </SearchTwo>
+          </SearchesDiv>
+          <FilterDiv>
+            <HThree>Low on energy? Try our lazy filter!</HThree>
+            <LazyInstructions>
+              Applying the lazy filter to your search, will sort your results by
+              preparation time.
+              <br></br> You dont have to use the filter if you aren't feeling
+              particularily lazy or energized.<br></br> You can leave the meter
+              empty or, select the second option from the left for default
+              sorting.
+            </LazyInstructions>
+          </FilterDiv>
+          <LazyFilter />
+        </Text>
+      </Body>
     </>
   );
 };
 
-const Home = styled.div``;
+const Body = styled.div`
+  background-image: url(${homebackground});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+`;
 
-const Button = styled.button``;
+const Text = styled.div`
+  background-color: white;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  position: relative;
+  left: 20%;
+  box-shadow: 1px 1px 8px grey;
+`;
 
-const ProfileLink = styled(Link)``;
+const BigTitle = styled.h1`
+  font-size: 55px;
+  margin-bottom: 15px;
+  background: transparent;
+  text-align: center;
+`;
 
-const GetRecipe = styled.button``;
+const Button = styled.button`
+  z-index: 8;
+  position: absolute;
+  top: 0px;
+  left: 1300px;
+  padding: 20px;
+  background-color: white;
+  &:hover {
+    box-shadow: 1px 1px 10px #80808085;
+  }
+`;
+
+const SearchesDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-bottom: 15px;
+`;
+
+const SearchOne = styled.div`
+  text-align: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 10px #80808080;
+`;
+const SearchTwo = styled.div`
+  text-align: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 1px 1px 10px #80808080;
+`;
+
+const Title = styled.h2`
+  text-align: center;
+  font-size: 28px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+`;
+
+const HThree = styled.h3`
+  font-size: 24px;
+  padding-bottom: 10px;
+  text-align: center;
+`;
+
+const Instructions = styled.p`
+  margin: 15px;
+`;
+
+const Input = styled.input`
+  border: 1px solid #00000036;
+  margin: 5px;
+  font-style: italic;
+  padding-left: 3px;
+  border-radius: 5px;
+  height: 30px;
+  width: 120px;
+  font-size: 15px;
+`;
+
+const IngredientInput = styled.textarea`
+  border: #00000036 solid 1px;
+  margin: 5px;
+  padding-left: 3px;
+  resize: none;
+  border-radius: 5px;
+  font-size: 15px;
+  font-style: italic;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const FilterDiv = styled.div`
+  justify-content: center;
+  align-items: center;
+`;
+
+const LazyInstructions = styled.p`
+  text-align: center;
+  line-height: 2;
+`;
+
+const ProfileLink = styled(Link)`
+  text-decoration: none;
+`;
+
+const GetRecipe = styled.button`
+  margin: 10px;
+  background-color: white;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    transform: translateY(2px);
+    outline: none;
+  }
+`;
 
 const Results = styled.div``;
 

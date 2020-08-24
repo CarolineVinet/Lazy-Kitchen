@@ -9,13 +9,13 @@ const LazyFilter = () => {
   return (
     <RadioMenu>
       <RadioDiv>
-        <input
+        <Input
           onChange={() => {
             setLazyFilter("energized");
           }}
           type="radio"
           name="mood"
-        ></input>
+        ></Input>
         <RiEmotionLine
           style={{
             height: "30px",
@@ -25,13 +25,13 @@ const LazyFilter = () => {
         />
       </RadioDiv>
       <RadioDiv>
-        <input
+        <Input
           onChange={() => {
             setLazyFilter("neutral");
           }}
           type="radio"
           name="mood"
-        ></input>
+        ></Input>
         <BiSmile
           style={{
             height: "30px",
@@ -41,13 +41,13 @@ const LazyFilter = () => {
         />
       </RadioDiv>
       <RadioDiv>
-        <input
+        <Input
           onChange={() => {
             setLazyFilter("tired");
           }}
           type="radio"
           name="mood"
-        ></input>
+        ></Input>
         <RiEmotionNormalLine
           style={{
             height: "30px",
@@ -57,13 +57,13 @@ const LazyFilter = () => {
         />
       </RadioDiv>
       <RadioDiv>
-        <input
+        <Input
           onChange={() => {
             setLazyFilter("deadtired");
           }}
           type="radio"
           name="mood"
-        ></input>
+        ></Input>
         <BiDizzy
           style={{
             height: "30px",
@@ -76,15 +76,10 @@ const LazyFilter = () => {
   );
 };
 
-// happy: sort by longest
-// smile: no sorting
-// meh: sort by shortest
-// deadtired: set a max preptime & sort by shortest
-
 const RadioMenu = styled.div`
   display: flex;
   flex-direction: row;
-  margin: 10px;
+  justify-content: center;
 `;
 
 const RadioDiv = styled.div`
@@ -92,6 +87,10 @@ const RadioDiv = styled.div`
   flex-direction: column;
   align-items: center;
   justify-items: center;
+`;
+
+const Input = styled.input`
+  cursor: pointer;
 `;
 
 export default LazyFilter;
