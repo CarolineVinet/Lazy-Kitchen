@@ -4,24 +4,52 @@ import styled from "styled-components";
 const ReviewTile = ({ review }) => {
   return (
     <Review>
-      <ReviewAuthor>{review.author}</ReviewAuthor>
-      <ReviewDate>{review.date}</ReviewDate>
-      <ReviewRating>{review.rating}</ReviewRating>
-      <ReviewBody>{review.body}</ReviewBody>
+      <Top>
+        <ReviewAuthor>Review left by {review.author}</ReviewAuthor>
+        <ReviewRating>{review.rating}</ReviewRating>
+      </Top>
+      <Bottom>
+        <ReviewDate>{review.date}</ReviewDate>
+        <ReviewBody>{review.body}</ReviewBody>
+      </Bottom>
     </Review>
   );
 };
 
 const Review = styled.div`
-  border: 2px solid black;
+  border: 3px solid fuchsia;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  margin-bottom: 10px;
 `;
 
-const ReviewAuthor = styled.div``;
+const Top = styled.div`
+  border-bottom: 1px solid grey;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 12px;
+`;
 
-const ReviewDate = styled.div``;
+const ReviewAuthor = styled.div`
+  font-size: 20px;
+  font-style: italic;
+`;
 
 const ReviewRating = styled.div``;
 
-const ReviewBody = styled.div``;
+const Bottom = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ReviewDate = styled.div`
+  text-align: left;
+`;
+
+const ReviewBody = styled.div`
+  text-align: center;
+`;
 
 export default ReviewTile;

@@ -149,7 +149,26 @@ const handleRecipeById = (req, res) => {
       return response.json();
     })
     .then((data) => {
-      res.status(200).json(data);
+      return fetch(
+        `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${req.params.id}/analyzedInstructions?stepBreakdown=false`,
+        {
+          method: "GET",
+          headers: {
+            "x-rapidapi-host":
+              "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
+            "x-rapidapi-key":
+              "0743ec8629mshf67977e8c63b981p158834jsn37aa89ebfd81",
+          },
+        }
+      )
+        .then((recipeResponse) => recipeResponse.json())
+        .then((recipeData) => {
+          if (recipeData.length > 0) {
+            res.status(200).json({ ...data, recipeSteps: recipeData[0].steps });
+          } else {
+            res.status(200).json({ ...data, recipeSteps: [] });
+          }
+        });
     });
 };
 
@@ -252,9 +271,8 @@ const handleRecipeByIngredients = (req, res) => {
 };
 
 const handleFavorite = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
   try {
-    const client = await MongoClient(MONGO_URI, options);
-
     await client.connect();
     const db = client.db("lazychefproject");
 
@@ -274,17 +292,18 @@ const handleFavorite = async (req, res) => {
       assert.equal(1, r.matchedCount);
       assert.equal(1, r.modifiedCount);
       res.status(200).json(newFavorites);
+      client.close();
     });
   } catch (e) {
     console.log(e);
+    client.close();
     res.status(500).json(e);
   }
 };
 
 const handleUnfavorite = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
   try {
-    const client = await MongoClient(MONGO_URI, options);
-
     await client.connect();
     const db = client.db("lazychefproject");
 
@@ -307,10 +326,12 @@ const handleUnfavorite = async (req, res) => {
       console.log(r.modifiedCount);
       assert.equal(1, r.matchedCount);
       assert.equal(1, r.modifiedCount);
+      client.close();
       res.status(200).json(newFavorites);
     });
   } catch (e) {
     console.log(e);
+    client.close();
     res.status(500).json(e);
   }
 };
@@ -353,9 +374,8 @@ const handleGetAllFavorites = async (req, res) => {
 };
 
 const handleTriedIt = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
   try {
-    const client = await MongoClient(MONGO_URI, options);
-
     await client.connect();
     const db = client.db("lazychefproject");
 
@@ -377,10 +397,12 @@ const handleTriedIt = async (req, res) => {
       console.log(r.modifiedCount);
       assert.equal(1, r.matchedCount);
       assert.equal(1, r.modifiedCount);
+      client.close();
       res.status(200).json(newHistory);
     });
   } catch (e) {
     console.log(e);
+    client.close();
     res.status(500).json(e);
   }
 };
@@ -425,9 +447,8 @@ const handleGetUserHistory = async (req, res) => {
 };
 
 const handleUpdateUser = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
   try {
-    const client = await MongoClient(MONGO_URI, options);
-
     await client.connect();
     const db = client.db("lazychefproject");
 
@@ -447,6 +468,7 @@ const handleUpdateUser = async (req, res) => {
     console.log(r.modifiedCount);
     assert.equal(1, r.matchedCount);
     assert.equal(1, r.modifiedCount);
+    client.close();
     res.status(200).json({
       allergies: req.body.allergies,
       diet: req.body.diet,
@@ -454,6 +476,7 @@ const handleUpdateUser = async (req, res) => {
     });
   } catch (e) {
     console.log(e);
+    client.close();
     res.status(500).json(e);
   }
 };
@@ -467,6 +490,7 @@ const handleGetAllReviews = async (req, res) => {
   const reviews = await db.collection("reviews").find().toArray();
 
   console.log("handlers line 469 ::: ", reviews);
+  client.close();
   res.status(200).json(reviews);
 };
 
@@ -484,6 +508,7 @@ const handleAddReview = async (req, res) => {
     date: moment().format("h:mm a , MMMM Do YYYY"),
   };
   await db.collection("reviews").insertOne(newReview);
+  client.close();
   res.status(201).json(newReview);
 };
 

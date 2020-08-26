@@ -2,13 +2,19 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { CurrentUserContext } from "./CurrentUserContext";
 import logo from "../assets/logolazy.png";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const { currentUser } = useContext(CurrentUserContext);
 
   return (
     <Bar>
-      <Logo src={logo}></Logo>
+      <Wrapper>
+        <Button>
+          <ProfileLink to="/profile"> My Profile</ProfileLink>
+        </Button>
+        <Logo src={logo}></Logo>
+      </Wrapper>
       <Greeting>Hello {currentUser.firstName} !</Greeting>
     </Bar>
   );
@@ -31,6 +37,24 @@ const Bar = styled.div`
 const Logo = styled.img`
   height: 50px;
   width: 50px;
+  margin-left: 20px;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+`;
+
+const ProfileLink = styled(Link)`
+  text-decoration: none;
+`;
+
+const Button = styled.button`
+  padding: 10px;
+  margin-right: 30px;
+  background-color: white;
+  &:hover {
+    box-shadow: 1px 1px 10px #80808085;
+  }
 `;
 
 const Greeting = styled.div`

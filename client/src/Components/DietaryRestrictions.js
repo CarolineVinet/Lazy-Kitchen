@@ -30,170 +30,180 @@ const DietModal = () => {
 
   return (
     <Body>
-      <form>
-        <div>
-          Diet
+      <Wrapper>
+        <DietDiv>
+          <Category> Diet</Category>
           <CheckItem>
-            <input
+            <RadioInput
               onChange={() => {
                 dietListOnChange("vegetarian");
               }}
               type="radio"
               name="diet"
-            ></input>
+            ></RadioInput>{" "}
             Vegetarian
           </CheckItem>
           <CheckItem>
-            <input
+            <RadioInput
               onChange={() => {
                 dietListOnChange("vegan");
               }}
               type="radio"
               name="diet"
-            ></input>
+            ></RadioInput>{" "}
             Vegan
           </CheckItem>
           <CheckItem>
-            <input
+            <RadioInput
               onChange={() => {
                 dietListOnChange("ovo vegetarian");
               }}
               type="radio"
               name="diet"
-            ></input>
+            ></RadioInput>{" "}
             Ovo-Vegetarian
           </CheckItem>
           <CheckItem>
-            <input
+            <RadioInput
               onChange={() => {
                 dietListOnChange("lacto vegetarian");
               }}
               type="radio"
               name="diet"
-            ></input>
+            ></RadioInput>{" "}
             Lacto-Vegetarian
           </CheckItem>
           <CheckItem>
-            <input
+            <RadioInput
               onChange={() => {
                 dietListOnChange("pescetarian");
               }}
               type="radio"
               name="diet"
-            ></input>
+            ></RadioInput>{" "}
             Pescetarian
           </CheckItem>
           <CheckItem>
-            <input
+            <RadioInput
               onChange={() => {
                 dietListOnChange("");
               }}
               type="radio"
               name="diet"
-            ></input>
+            ></RadioInput>{" "}
             None
           </CheckItem>
-        </div>
+        </DietDiv>
 
-        <div>
-          Allergies/Intolerances
-          <CheckItem>
-            <input
-              onChange={() => {
-                allergyListOnChange("dairy");
-              }}
-              type="checkbox"
-            ></input>
-            Dairy
-          </CheckItem>
-          <CheckItem>
-            <input
-              onChange={() => {
-                allergyListOnChange("egg");
-              }}
-              type="checkbox"
-            ></input>
-            Egg
-          </CheckItem>
-          <CheckItem>
-            <input
-              onChange={() => {
-                allergyListOnChange("gluten");
-              }}
-              type="checkbox"
-            ></input>
-            Gluten
-          </CheckItem>
-          <CheckItem>
-            <input
-              onChange={() => {
-                allergyListOnChange("wheat");
-              }}
-              type="checkbox"
-            ></input>
-            Wheat
-          </CheckItem>
-          <CheckItem>
-            <input
-              onChange={() => {
-                allergyListOnChange("shellfish");
-              }}
-              type="checkbox"
-            ></input>
-            Shellfish
-          </CheckItem>
-          <CheckItem>
-            <input
-              onChange={() => {
-                allergyListOnChange("peanuts");
-              }}
-              type="checkbox"
-            ></input>
-            Peanuts
-          </CheckItem>
-          <CheckItem>
-            <input
-              onChange={() => {
-                allergyListOnChange("nuts");
-              }}
-              type="checkbox"
-            ></input>
-            Nuts
-          </CheckItem>
-          <CheckItem>
-            <input
-              onChange={() => {
-                allergyListOnChange("soy");
-              }}
-              type="checkbox"
-            ></input>
-            Soy
-          </CheckItem>
-          <CheckItem>
-            <input
-              onChange={() => {
-                allergyListOnChange("sesame");
-              }}
-              type="checkbox"
-            ></input>
-            Sesame
-          </CheckItem>
-        </div>
+        <AllergyDiv>
+          <Category> Allergies/Intolerances</Category>
+          <DivC>
+            <DivA>
+              <CheckItem>
+                <RadioInput
+                  onChange={() => {
+                    allergyListOnChange("dairy");
+                  }}
+                  type="checkbox"
+                ></RadioInput>{" "}
+                Dairy
+              </CheckItem>
+              <CheckItem>
+                <RadioInput
+                  onChange={() => {
+                    allergyListOnChange("egg");
+                  }}
+                  type="checkbox"
+                ></RadioInput>{" "}
+                Egg
+              </CheckItem>
+              <CheckItem>
+                <RadioInput
+                  onChange={() => {
+                    allergyListOnChange("gluten");
+                  }}
+                  type="checkbox"
+                ></RadioInput>{" "}
+                Gluten
+              </CheckItem>
+              <CheckItem>
+                <RadioInput
+                  onChange={() => {
+                    allergyListOnChange("wheat");
+                  }}
+                  type="checkbox"
+                ></RadioInput>{" "}
+                Wheat
+              </CheckItem>
+              <CheckItem>
+                <RadioInput
+                  onChange={() => {
+                    allergyListOnChange("shellfish");
+                  }}
+                  type="checkbox"
+                ></RadioInput>{" "}
+                Shellfish
+              </CheckItem>
+              <CheckItem>
+                <RadioInput
+                  onChange={() => {
+                    allergyListOnChange("peanuts");
+                  }}
+                  type="checkbox"
+                ></RadioInput>{" "}
+                Peanuts
+              </CheckItem>
+            </DivA>
+            <DivB>
+              <CheckItem>
+                <RadioInput
+                  onChange={() => {
+                    allergyListOnChange("nuts");
+                  }}
+                  type="checkbox"
+                ></RadioInput>{" "}
+                Nuts
+              </CheckItem>
+              <CheckItem>
+                <RadioInput
+                  onChange={() => {
+                    allergyListOnChange("soy");
+                  }}
+                  type="checkbox"
+                ></RadioInput>{" "}
+                Soy
+              </CheckItem>
+              <CheckItem>
+                <RadioInput
+                  onChange={() => {
+                    allergyListOnChange("sesame");
+                  }}
+                  type="checkbox"
+                ></RadioInput>{" "}
+                Sesame
+              </CheckItem>
+            </DivB>
+          </DivC>
+        </AllergyDiv>
+      </Wrapper>
 
-        <div>
-          Ingredients to avoid
-          <input
+      <AvoidDiv>
+        <InputDiv>
+          <Text>Ingredients to avoid</Text>
+          <Input
             onChange={(event) => {
               setAvoidList(event.target.value);
             }}
             type="text"
             placeholder="ex: cilantro, mushrooms, etc"
-          ></input>
-        </div>
+          ></Input>
+        </InputDiv>
 
-        <button
+        <Save
           onClick={(event) => {
             event.preventDefault();
+
+            //DISPLAY SPINNER///
 
             fetch("/updateuser", {
               method: "PUT",
@@ -209,7 +219,9 @@ const DietModal = () => {
                 return response.json();
               })
               .then((data) => {
-                console.log("dietary restrictions result line 212 :: ", data);
+                //SET SELECTIONS TO NULL//
+                //DISPLAY CONFIRMATION MESSAGE
+
                 setCurrentUser({
                   ...currentUser,
                   allergies: data.allergies,
@@ -220,16 +232,119 @@ const DietModal = () => {
           }}
         >
           Save
-        </button>
-      </form>
+        </Save>
+      </AvoidDiv>
     </Body>
   );
 };
 
 const Body = styled.div`
-  border: red solid 2px;
+  box-shadow: 1px 1px 10px #808080ab;
+  border-radius: 8px;
   margin: 15px;
-  width: 50%;
+  width: 26%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+`;
+
+const Category = styled.p`
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: -10px;
+`;
+
+const RadioInput = styled.input`
+  cursor: pointer;
+`;
+
+const DietDiv = styled.div`
+  padding: 10px;
+  line-height: 2;
+  margin-top: 20px;
+`;
+const AllergyDiv = styled.div`
+  padding: 10px;
+  border-left: 1px #80808045 solid;
+  line-height: 2;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  margin-bottom: 5px;
+`;
+
+const DivA = styled.div``;
+
+const DivB = styled.div``;
+
+const DivC = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`;
+
+const AvoidDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: left;
+  margin-top: 5px;
+`;
+const InputDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  padding-bottom: 5px;
+`;
+
+const Text = styled.p`
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+`;
+
+const Input = styled.input`
+  border: 1px solid #00000036;
+  margin: 5px;
+  font-style: italic;
+  padding-left: 3px;
+  border-radius: 5px;
+  height: 30px;
+  width: 260px;
+  font-size: 15px;
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    outline: none;
+  }
+`;
+
+const Save = styled.button`
+  padding-top: 25px;
+  padding-left: 45px;
+  font-weight: bold;
+  background-color: white;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    transform: translateY(2px);
+    outline: none;
+  }
 `;
 
 const CheckItem = styled.div``;

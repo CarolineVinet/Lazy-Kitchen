@@ -20,9 +20,10 @@ const Homepage = () => {
     <>
       <Body>
         <NavBar></NavBar>
-        <Button>
+        {/* <Button>
           <ProfileLink to="/profile"> My Profile</ProfileLink>
-        </Button>
+        </Button> */}
+
         <BigTitle>Recipe Finder</BigTitle>
         <Text>
           <Title>Two easy ways to get inspired</Title>
@@ -34,9 +35,6 @@ const Homepage = () => {
                 <br></br>
                 Enter at least one keyword to launch your search.
               </Instructions>
-              {/* <Small>
-                ex: spicy <Span> -or- </Span> pasta
-              </Small> */}
               <Input
                 placeholder=" e.i: lasagna"
                 onChange={(event) => {
@@ -74,7 +72,6 @@ const Homepage = () => {
                 Enter the ingredients you have on hand <br></br>(separated by
                 comas) and see what you can create!
               </Instructions>
-              {/* <Small>ex: milk, eggs, flour</Small> */}
               <IngredientInput
                 rows="4"
                 cols="30"
@@ -158,17 +155,17 @@ const BigTitle = styled.h1`
   text-align: center;
 `;
 
-const Button = styled.button`
-  z-index: 8;
-  position: absolute;
-  top: 0px;
-  left: 1300px;
-  padding: 20px;
-  background-color: white;
-  &:hover {
-    box-shadow: 1px 1px 10px #80808085;
-  }
-`;
+// const Button = styled.button`
+//   z-index: 8;
+//   position: absolute;
+//   top: 0px;
+//   left: 1300px;
+//   padding: 20px;
+//   background-color: white;
+//   &:hover {
+//     box-shadow: 1px 1px 10px #80808085;
+//   }
+// `;
 
 const SearchesDiv = styled.div`
   display: flex;

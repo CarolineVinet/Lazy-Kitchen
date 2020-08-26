@@ -11,11 +11,15 @@ const ReviewSection = ({ recipeId }) => {
   return (
     <LeaveReviewDiv>
       <ReviewInput
+        rows="4"
+        cols="40"
+        placeholder="Write your review here!"
         onChange={(event) => {
           setReviewBody(event.target.value);
         }}
       ></ReviewInput>
       <RatingDiv>
+        <p>Your Rating : </p>
         <div>
           <input
             onChange={() => {
@@ -94,12 +98,27 @@ const ReviewSection = ({ recipeId }) => {
 };
 
 const LeaveReviewDiv = styled.div`
-  border: 2px black solid;
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
+  justify-content: center;
+  width: 100%;
 `;
 
-const ReviewInput = styled.textarea``;
+const ReviewInput = styled.textarea`
+  border: 1px #00000036 solid;
+  resize: none;
+  padding-left: 5px;
+  border-radius: 5px;
+  &:focus {
+    outline: none;
+  }
+`;
 
-const RatingDiv = styled.div``; //for now
+const RatingDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
 const Button = styled.button``;
 
