@@ -3,11 +3,14 @@ import styled from "styled-components";
 import { CurrentUserContext } from "./CurrentUserContext";
 import { ReviewsContext } from "./ReviewsContext";
 
+import "../stars.css";
+
 const ReviewSection = ({ recipeId }) => {
   const { currentUser } = useContext(CurrentUserContext);
   const [reviewBody, setReviewBody] = React.useState("");
   const [rating, setRating] = React.useState(0);
   const { reviews, setReviews } = useContext(ReviewsContext);
+
   return (
     <LeaveReviewDiv>
       <ReviewInput
@@ -20,55 +23,57 @@ const ReviewSection = ({ recipeId }) => {
       ></ReviewInput>
       <RatingDiv>
         <p>Your Rating : </p>
-        <div>
+        <div className="rating">
           <input
-            onChange={() => {
-              setRating(1);
-            }}
-            type="radio"
-            name="rating"
-          ></input>
-          1
-        </div>
-        <div>
-          <input
-            onChange={() => {
-              setRating(2);
-            }}
-            type="radio"
-            name="rating"
-          ></input>
-          2
-        </div>
-        <div>
-          <input
-            onChange={() => {
-              setRating(3);
-            }}
-            type="radio"
-            name="rating"
-          ></input>
-          3
-        </div>
-        <div>
-          <input
-            onChange={() => {
-              setRating(4);
-            }}
-            type="radio"
-            name="rating"
-          ></input>
-          4
-        </div>
-        <div>
-          <input
-            onChange={() => {
+            onChange={(event) => {
+              // event.preventDefault();
               setRating(5);
             }}
             type="radio"
             name="rating"
+            id="star5"
           ></input>
-          5
+          <label htmlFor="star5">5</label>
+          <input
+            onChange={(event) => {
+              // event.preventDefault();
+              setRating(4);
+            }}
+            type="radio"
+            name="rating"
+            id="star4"
+          ></input>
+          <label htmlFor="star4">4</label>
+          <input
+            onChange={(event) => {
+              // event.preventDefault();
+              setRating(3);
+            }}
+            type="radio"
+            name="rating"
+            id="star3"
+          ></input>
+          <label htmlFor="star3">3</label>
+          <input
+            onChange={(event) => {
+              // event.preventDefault();
+              setRating(2);
+            }}
+            type="radio"
+            name="rating"
+            id="star2"
+          ></input>
+          <label htmlFor="star2">2</label>
+          <input
+            onChange={(event) => {
+              // event.preventDefault();
+              setRating(1);
+            }}
+            type="radio"
+            name="rating"
+            id="star1"
+          ></input>
+          <label htmlFor="star1">1</label>
         </div>
       </RatingDiv>
       <Button
@@ -120,6 +125,8 @@ const RatingDiv = styled.div`
   flex-direction: row;
 `;
 
-const Button = styled.button``;
+const Button = styled.button`
+  width: 100px;
+`;
 
 export default ReviewSection;

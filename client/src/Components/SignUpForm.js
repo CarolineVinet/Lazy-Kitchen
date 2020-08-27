@@ -153,16 +153,19 @@ const Input = styled.input`
 `;
 
 const SignUpButton = styled.button`
-  width: 60px;
+  width: 70px;
   height: 40px;
-  background-color: white;
-  border-radius: 5px;
-  font-weight: bold;
+  border-radius: 22px;
+  padding-right: 7px;
+  padding-left: 7px;
+  box-shadow: 1px 1px 5px grey;
+  cursor: pointer;
   &:focus {
     outline: none;
   }
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    opacity: 0.8;
   }
   &:active {
     transform: translateY(2px);

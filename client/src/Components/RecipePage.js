@@ -8,6 +8,7 @@ import { ReviewsContext } from "./ReviewsContext";
 import ReviewTile from "./ReviewTile";
 import ReviewSection from "./LeaveReview";
 import marble from "../assets/resultsbackground.jpg";
+// import Heart from "./Heart";
 
 const RecipePage = () => {
   const [currentRecipe, setCurrentRecipe] = React.useState({});
@@ -85,8 +86,12 @@ const RecipePage = () => {
             <IngredientsDiv>
               <Description>Ingredients</Description>
               {currentRecipe.extendedIngredients
-                ? currentRecipe.extendedIngredients.map((ingredient) => {
-                    return <Ingredient>{ingredient.originalString}</Ingredient>;
+                ? currentRecipe.extendedIngredients.map((ingredient, i) => {
+                    return (
+                      <Ingredient key={i}>
+                        {ingredient.originalString}
+                      </Ingredient>
+                    );
                   })
                 : null}
             </IngredientsDiv>
@@ -94,7 +99,11 @@ const RecipePage = () => {
               <Description>Insctructions</Description>
               {currentRecipe.recipeSteps
                 ? currentRecipe.recipeSteps.map((recipeStep, i) => {
-                    return <StepDiv>{`${i + 1}. ${recipeStep.step}`}</StepDiv>;
+                    return (
+                      <StepDiv key={i}>{`${i + 1}. ${
+                        recipeStep.step
+                      }`}</StepDiv>
+                    );
                   })
                 : null}
             </Steps>
@@ -102,12 +111,12 @@ const RecipePage = () => {
         </TextDiv>
 
         <FavoriteDiv>
+          {/* <Heart id={id} />; */}
           {!toggleHeart ? (
             <FavText>Add to Favorites</FavText>
           ) : (
             <FavText>Added to Favorites</FavText>
           )}
-
           {!toggleHeart ? (
             <FavoriteIt
               onClick={() => {
@@ -189,9 +198,9 @@ const RecipePage = () => {
             See what other users thought of this recipe
           </RatingsTitle>
           <Rating>
-            {reviews.map((review) => {
+            {reviews.map((review, i) => {
               if (review.recipeId === parseInt(id)) {
-                return <ReviewTile review={review} />;
+                return <ReviewTile key={i} review={review} />;
               }
             })}
           </Rating>
@@ -287,7 +296,7 @@ const IngredientsDiv = styled.div`
 
 const Ingredient = styled.div``;
 
-const Steps = styled.p`
+const Steps = styled.div`
   justify-content: center;
   line-height: 2;
   width: 50%;

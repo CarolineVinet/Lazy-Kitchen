@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
+// import Heart from "./Heart";
+
 const RecipeTile = ({ recipe }) => {
   const imageSrc =
     recipe.image && recipe.image.includes("https://spoonacular.com")
@@ -14,6 +16,7 @@ const RecipeTile = ({ recipe }) => {
         <RecipeLink to={`/results/${recipe.id}`}>
           <RecipeFormat>{recipe.title}</RecipeFormat>
           <RecipeTime>Prep Time : {recipe.readyInMinutes}mins.</RecipeTime>
+          {/* <Heart id={recipe.id} />; */}
         </RecipeLink>
       </InnerRecipe>
     </Recipe>

@@ -36,7 +36,7 @@ const Homepage = () => {
                 Enter at least one keyword to launch your search.
               </Instructions>
               <Input
-                placeholder=" e.i: lasagna"
+                placeholder=" i.e.: lasagna"
                 onChange={(event) => {
                   setInputText(event.target.value);
                 }}
@@ -61,7 +61,7 @@ const Homepage = () => {
                     });
                 }}
               >
-                Get me a recipe NOW!
+                Search!
               </GetRecipe>
             </SearchOne>
 
@@ -72,41 +72,43 @@ const Homepage = () => {
                 Enter the ingredients you have on hand <br></br>(separated by
                 comas) and see what you can create!
               </Instructions>
-              <IngredientInput
-                rows="4"
-                cols="30"
-                placeholder=" e.i:  milk, eggs, flour, etc"
-                onChange={(event) => {
-                  setIngredientInput(event.target.value);
-                }}
-                type="text"
-              ></IngredientInput>
-              <br></br>
-              <GetRecipe
-                onClick={() => {
-                  console.log("diet stuff ", currentUser);
-                  fetch(
-                    `/getrecipebyingredients?search=${ingredientInput}&diet=${currentUser.diet}&allergies=${currentUser.allergies}&avoid=${currentUser.avoid}&lazy=${lazyFilter}`,
-                    {
-                      method: "GET",
-                      headers: { "Content-Type": "application/json" },
-                    }
-                  )
-                    .then((res) => {
-                      return res.json();
-                    })
-                    .then((data) => {
-                      console.log(
-                        "data being returned from BE double search ::",
-                        data
-                      );
-                      setRecipeResults(data);
-                      history.push("/results");
-                    });
-                }}
-              >
-                Show me what I can make NOW!
-              </GetRecipe>
+              <Wrapper>
+                <IngredientInput
+                  rows="4"
+                  cols="30"
+                  placeholder=" i.e.:  milk, eggs, flour, etc"
+                  onChange={(event) => {
+                    setIngredientInput(event.target.value);
+                  }}
+                  type="text"
+                ></IngredientInput>
+                <br></br>
+                <GetRecipe
+                  onClick={() => {
+                    console.log("diet stuff ", currentUser);
+                    fetch(
+                      `/getrecipebyingredients?search=${ingredientInput}&diet=${currentUser.diet}&allergies=${currentUser.allergies}&avoid=${currentUser.avoid}&lazy=${lazyFilter}`,
+                      {
+                        method: "GET",
+                        headers: { "Content-Type": "application/json" },
+                      }
+                    )
+                      .then((res) => {
+                        return res.json();
+                      })
+                      .then((data) => {
+                        console.log(
+                          "data being returned from BE double search ::",
+                          data
+                        );
+                        setRecipeResults(data);
+                        history.push("/results");
+                      });
+                  }}
+                >
+                  Search!
+                </GetRecipe>
+              </Wrapper>
             </SearchTwo>
           </SearchesDiv>
           <FilterDiv>
@@ -127,6 +129,13 @@ const Homepage = () => {
   );
 };
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+
 const Body = styled.div`
   background-image: url(${homebackground});
   background-position: center;
@@ -139,7 +148,6 @@ const Body = styled.div`
 
 const Text = styled.div`
   background-color: white;
-  border-radius: 8px;
   display: flex;
   flex-direction: column;
   width: 60%;
@@ -154,18 +162,6 @@ const BigTitle = styled.h1`
   background: transparent;
   text-align: center;
 `;
-
-// const Button = styled.button`
-//   z-index: 8;
-//   position: absolute;
-//   top: 0px;
-//   left: 1300px;
-//   padding: 20px;
-//   background-color: white;
-//   &:hover {
-//     box-shadow: 1px 1px 10px #80808085;
-//   }
-// `;
 
 const SearchesDiv = styled.div`
   display: flex;
@@ -245,13 +241,14 @@ const ProfileLink = styled(Link)`
 `;
 
 const GetRecipe = styled.button`
-  margin: 10px;
-  background-color: white;
   text-decoration: none;
-  font-weight: bold;
+  padding: 10px;
+  border-radius: 22px;
+  box-shadow: 1px 1px 5px grey;
   cursor: pointer;
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    opacity: 0.8;
   }
   &:focus {
     outline: none;

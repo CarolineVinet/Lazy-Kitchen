@@ -153,17 +153,20 @@ const Input = styled.input`
 `;
 
 const Button = styled.button`
-  width: 60px;
+  width: 75px;
+  padding-left: 7px;
+  padding-right: 7px;
+  border-radius: 22px;
+  box-shadow: 1px 1px 5px grey;
   height: 40px;
-  background-color: white;
   margin-top: 15px;
-  border-radius: 5px;
-  font-weight: bold;
+  cursor: pointer;
   &:focus {
     outline: none;
   }
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    opacity: 0.8;
   }
   &:active {
     transform: translateY(2px);
@@ -178,6 +181,7 @@ const ErrorMessage = styled.div`
 
 const LinkDiv = styled(Link)`
   color: black;
+  text-decoration: none;
 `;
 
 export default SignIn;

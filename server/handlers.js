@@ -409,7 +409,6 @@ const handleTriedIt = async (req, res) => {
 
 const handleGetUserHistory = async (req, res) => {
   const history = req.query.history.split(",");
-  console.log("handlers 286 :: ", history);
   const historyArr = [];
 
   return new Promise((resolve) => {

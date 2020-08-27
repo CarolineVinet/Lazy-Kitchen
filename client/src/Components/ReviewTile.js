@@ -17,7 +17,6 @@ const ReviewTile = ({ review }) => {
 };
 
 const Review = styled.div`
-  border: 3px solid fuchsia;
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -33,7 +32,7 @@ const Top = styled.div`
 `;
 
 const ReviewAuthor = styled.div`
-  font-size: 20px;
+  font-size: 18px;
   font-style: italic;
 `;
 
@@ -45,11 +44,11 @@ const Bottom = styled.div`
 `;
 
 const ReviewDate = styled.div`
-  text-align: left;
+  text-align: right;
 `;
 
 const ReviewBody = styled.div`
-  text-align: center;
+  text-align: left;
 `;
 
 export default ReviewTile;

@@ -6,8 +6,32 @@ import { LazyContext } from "./LazyContext";
 
 const LazyFilter = () => {
   const { setLazyFilter } = useContext(LazyContext);
+  const [sliderValue, setSliderValue] = React.useState(2);
+
   return (
     <RadioMenu>
+      <input
+        onChange={(event) => {
+          event.preventDefault();
+
+          const value = parseInt(event.target.value);
+
+          if (value === 1) {
+            setLazyFilter("energized");
+          } else if (value === 2) {
+            setLazyFilter("neutral");
+          } else if (value === 3) {
+            setLazyFilter("tired");
+          } else if (value === 4) {
+            setLazyFilter("deadtired");
+          }
+          setSliderValue(value);
+        }}
+        type="range"
+        min="1"
+        max="4"
+        value={sliderValue}
+      ></input>
       <RadioDiv>
         <Input
           onChange={() => {

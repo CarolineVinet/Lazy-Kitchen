@@ -100,6 +100,7 @@ const GateTwo = styled.div`
 
 const LinkDiv = styled(Link)`
   text-decoration: underline;
+  cursor: pointer;
 `;
 
 const SigninRedirect = styled.p`
