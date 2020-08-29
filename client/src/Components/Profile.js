@@ -41,7 +41,6 @@ const Profile = () => {
           return response.json();
         })
         .then((data) => {
-          console.log("recipe array data :: ", data);
           setUserFavorites(data);
         });
     }
@@ -138,7 +137,11 @@ const Profile = () => {
               {favoritesVisible === true ? (
                 <FavoriteList>
                   {userFavorites.map((favorite) => {
-                    return <RecipeTile recipe={favorite} />;
+                    if (
+                      currentUser.favorites.includes(favorite.id.toString())
+                    ) {
+                      return <RecipeTile recipe={favorite} />;
+                    }
                   })}
                 </FavoriteList>
               ) : null}

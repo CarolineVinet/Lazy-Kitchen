@@ -86,7 +86,6 @@ const Homepage = () => {
                 <br></br>
                 <GetRecipe
                   onClick={() => {
-                    console.log("diet stuff ", currentUser);
                     fetch(
                       `/getrecipebyingredients?search=${ingredientInput}&diet=${currentUser.diet}&allergies=${currentUser.allergies}&avoid=${currentUser.avoid}&lazy=${lazyFilter}`,
                       {
@@ -98,10 +97,6 @@ const Homepage = () => {
                         return res.json();
                       })
                       .then((data) => {
-                        console.log(
-                          "data being returned from BE double search ::",
-                          data
-                        );
                         setRecipeResults(data);
                         history.push("/results");
                       });

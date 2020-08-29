@@ -1,15 +1,15 @@
 import React, { useContext } from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { CurrentUserContext } from "./CurrentUserContext";
 
 const DietModal = ({ onCancel, setSavedVisible }) => {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-  const [dietList, setDietList] = React.useState([]);
+  const [dietList, setDietList] = React.useState("");
   const [allergyList, setAllergyList] = React.useState([]);
   const [avoidList, setAvoidList] = React.useState("");
 
   React.useEffect(() => {
-    if (currentUser.diet && currentUser.diet.length > 0) {
+    if (currentUser.diet) {
       setDietList(currentUser.diet);
     }
   }, [currentUser.diet]);
@@ -25,14 +25,7 @@ const DietModal = ({ onCancel, setSavedVisible }) => {
   }, [currentUser.avoid]);
 
   const dietListOnChange = (dietType) => {
-    if (!dietList.includes(dietType)) {
-      setDietList([...dietList, dietType]);
-    } else {
-      const index = dietList.findIndex((item) => item === dietType);
-      delete dietList[index];
-      console.log(dietList);
-      setDietList([...dietList]);
-    }
+    setDietList(dietType);
   };
 
   const allergyListOnChange = (allergy) => {
@@ -41,7 +34,7 @@ const DietModal = ({ onCancel, setSavedVisible }) => {
     } else {
       const index = allergyList.findIndex((item) => item === allergy);
       delete allergyList[index];
-      console.log(allergyList);
+
       setAllergyList([...allergyList]);
     }
   };

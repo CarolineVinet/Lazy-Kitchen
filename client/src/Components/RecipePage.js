@@ -1,13 +1,14 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import NavBar from "./Navbar";
-import { useParams, Link } from "react-router-dom";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { useHistory, useParams, Link } from "react-router-dom";
 import { CurrentUserContext } from "./CurrentUserContext";
 import { ReviewsContext } from "./ReviewsContext";
 import ReviewTile from "./ReviewTile";
 import ReviewSection from "./LeaveReview";
 import marble from "../assets/resultsbackground.jpg";
+import Heart from "./Heart";
+import Spinner from "./Spinner";
 
 const RecipePage = () => {
   const [currentRecipe, setCurrentRecipe] = React.useState({});
@@ -18,13 +19,19 @@ const RecipePage = () => {
   const [currentRecipeReviews, setCurrentRecipeReviews] = React.useState([]);
   const [wasLiked, setWasLiked] = React.useState(false);
   const [wasDisliked, setWasDisliked] = React.useState(false);
+  const [loadingStatus, setLoadingStatus] = React.useState("loading");
+
+  const history = useHistory();
 
   React.useEffect(() => {
     const matchingRecipe = currentUser.history.find((recipe) => {
       return recipe.recipeId === id;
     });
 
-    if (matchingRecipe.isLiked === true) {
+    if (!matchingRecipe) {
+      setWasLiked(false);
+      setWasDisliked(false);
+    } else if (matchingRecipe.isLiked === true) {
       setWasLiked(true);
       setWasDisliked(false);
     } else if (matchingRecipe.isLiked === false) {
@@ -44,6 +51,7 @@ const RecipePage = () => {
   }, [reviews]);
 
   React.useEffect(() => {
+    setLoadingStatus("loading");
     fetch(`/getrecipe/${id}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
@@ -53,6 +61,7 @@ const RecipePage = () => {
       })
       .then((data) => {
         setCurrentRecipe(data);
+        setLoadingStatus("ready");
       });
   }, []);
 
@@ -88,183 +97,157 @@ const RecipePage = () => {
   return (
     <>
       <NavBar />
-      <BackButton>
-        <ResultsLink to="/results">Back</ResultsLink>
-      </BackButton>
-      <HomeButton>
-        <HomeLink to="/homepage">Homepage</HomeLink>
-      </HomeButton>
-
-      <Recipe>
-        <ImageHeader></ImageHeader>
-
-        <RoundImage
-          style={
-            currentRecipe.image
-              ? { backgroundImage: `url(${currentRecipe.image})` }
-              : {}
-          }
-        ></RoundImage>
-
-        <TextDiv>
-          <Title>{currentRecipe.title}</Title>
-          <TextWrapper>
-            <IngredientsDiv>
-              <Description>Ingredients</Description>
-              {currentRecipe.extendedIngredients
-                ? currentRecipe.extendedIngredients.map((ingredient, i) => {
-                    return (
-                      <Ingredient key={i}>
-                        {ingredient.originalString}
-                      </Ingredient>
-                    );
-                  })
-                : null}
-            </IngredientsDiv>
-            <Steps>
-              <Description>Insctructions</Description>
-              {currentRecipe.recipeSteps
-                ? currentRecipe.recipeSteps.map((recipeStep, i) => {
-                    return (
-                      <StepDiv key={i}>{`${i + 1}. ${
-                        recipeStep.step
-                      }`}</StepDiv>
-                    );
-                  })
-                : null}
-            </Steps>
-          </TextWrapper>
-        </TextDiv>
-
-        <FavoriteDiv>
-          {/* <Heart id={id} />; */}
-          {!toggleHeart ? (
-            <FavText>Add to Favorites</FavText>
-          ) : (
-            <FavText>Added to Favorites</FavText>
-          )}
-          {!toggleHeart ? (
-            <FavoriteIt
-              onClick={() => {
-                fetch("/addfavorite", {
-                  method: "PUT",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    recipeId: id,
-                    userId: currentUser._id,
-                  }),
-                })
-                  .then((res) => {
-                    return res.json();
-                  })
-                  .then((data) => {
-                    console.log("favourites response", data);
-                    setCurrentUser({
-                      ...currentUser,
-                      favorites: data,
-                    });
-                    setToggleHeart(true);
-                    //
-                    // if toggledheart is true, display icon vs other
-                  });
-              }}
-            >
-              <AiOutlineHeart />
-            </FavoriteIt>
-          ) : (
-            <UnfavoriteIt
-              onClick={() => {
-                fetch("/removefavorite", {
-                  method: "PUT",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                    recipeId: id,
-                    userId: currentUser._id,
-                  }),
-                })
-                  .then((res) => {
-                    return res.json();
-                  })
-                  .then((data) => {
-                    setCurrentUser({
-                      ...currentUser,
-                      favorites: data,
-                    });
-                    setToggleHeart(false);
-                  });
-              }}
-            >
-              <AiFillHeart color="red" />
-            </UnfavoriteIt>
-          )}
-        </FavoriteDiv>
-
-        <TriedDiv>
-          Tried it already? let us know if you<br></br>
-          <LovedIt
-            style={
-              wasLiked
-                ? {
-                    backgroundColor: "#f2c2ca",
-                    cursor: "default",
-                    color: "black",
-                  }
-                : {}
-            }
-            disabled={wasLiked}
+      {loadingStatus === "ready" ? (
+        <>
+          <BackButton
             onClick={() => {
-              setLikedDisliked(true);
-              setWasLiked(true);
-              setWasDisliked(false);
+              history.goBack();
             }}
           >
-            loved it
-          </LovedIt>{" "}
-          or
-          <HatedIt
-            style={
-              wasDisliked
-                ? {
-                    backgroundColor: "#f2c2ca",
-                    cursor: "default",
-                    color: "black",
-                  }
-                : {}
-            }
-            disabled={wasDisliked}
-            onClick={() => {
-              setLikedDisliked(false);
-              setWasDisliked(true);
-              setWasLiked(false);
-            }}
-          >
-            didn't
-          </HatedIt>
-          .
-        </TriedDiv>
+            Back
+          </BackButton>
+          <HomeButton>
+            <HomeLink to="/homepage">Homepage</HomeLink>
+          </HomeButton>
 
-        <RatingWrapper>
-          <RatingsTitle>
-            See what other users thought of this recipe
-          </RatingsTitle>
-          <Rating>
-            {currentRecipeReviews.length > 0 ? (
-              currentRecipeReviews.map((review, i) => {
-                return <ReviewTile key={i} review={review} />;
-              })
-            ) : (
-              <NoReviews>No reviews yet.</NoReviews>
-            )}
-          </Rating>
+          <Recipe>
+            <ImageHeader></ImageHeader>
 
-          <ReviewSection recipeId={parseInt(id)} />
-        </RatingWrapper>
-      </Recipe>
+            <RoundImage
+              style={
+                currentRecipe.image
+                  ? { backgroundImage: `url(${currentRecipe.image})` }
+                  : {}
+              }
+            ></RoundImage>
+
+            <TextDiv>
+              <Title>{currentRecipe.title}</Title>
+              <TextWrapper>
+                <IngredientsDiv>
+                  <Description>Ingredients</Description>
+                  {currentRecipe.extendedIngredients
+                    ? currentRecipe.extendedIngredients.map((ingredient, i) => {
+                        return (
+                          <Ingredient key={i}>
+                            {ingredient.originalString}
+                          </Ingredient>
+                        );
+                      })
+                    : null}
+                </IngredientsDiv>
+                <Steps>
+                  <Description>Insctructions</Description>
+                  {currentRecipe.recipeSteps
+                    ? currentRecipe.recipeSteps.map((recipeStep, i) => {
+                        return (
+                          <StepDiv key={i}>{`${i + 1}. ${
+                            recipeStep.step
+                          }`}</StepDiv>
+                        );
+                      })
+                    : null}
+                </Steps>
+              </TextWrapper>
+            </TextDiv>
+
+            <FavoriteDiv>
+              <HeartBox>
+                <Heart id={id} />
+              </HeartBox>
+
+              {!toggleHeart ? (
+                <FavText>Add to Favorites</FavText>
+              ) : (
+                <FavText>Added to Favorites</FavText>
+              )}
+            </FavoriteDiv>
+
+            <TriedDiv>
+              Tried it already? let us know if you<br></br>
+              <LovedIt
+                style={
+                  wasLiked
+                    ? {
+                        backgroundColor: "#f2c2ca",
+                        cursor: "default",
+                        color: "black",
+                      }
+                    : {}
+                }
+                disabled={wasLiked}
+                onClick={() => {
+                  setLikedDisliked(true);
+                  setWasLiked(true);
+                  setWasDisliked(false);
+                }}
+              >
+                loved it
+              </LovedIt>{" "}
+              or
+              <HatedIt
+                style={
+                  wasDisliked
+                    ? {
+                        backgroundColor: "#f2c2ca",
+                        cursor: "default",
+                        color: "black",
+                      }
+                    : {}
+                }
+                disabled={wasDisliked}
+                onClick={() => {
+                  setLikedDisliked(false);
+                  setWasDisliked(true);
+                  setWasLiked(false);
+                }}
+              >
+                didn't
+              </HatedIt>
+              .
+            </TriedDiv>
+
+            <RatingWrapper>
+              <RatingsTitle>
+                See what other users thought of this recipe
+              </RatingsTitle>
+              <Rating>
+                {currentRecipeReviews.length > 0 ? (
+                  currentRecipeReviews.map((review, i) => {
+                    return <ReviewTile key={i} review={review} />;
+                  })
+                ) : (
+                  <NoReviews>No reviews yet.</NoReviews>
+                )}
+              </Rating>
+
+              <ReviewSection recipeId={parseInt(id)} />
+            </RatingWrapper>
+          </Recipe>
+        </>
+      ) : (
+        <SpinnerContainer>
+          {" "}
+          <Spinner />
+        </SpinnerContainer>
+      )}
     </>
   );
 };
 
+const SpinnerContainer = styled.div`
+  height: 100vh;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+`;
+
 const NoReviews = styled.div``;
+
+const HeartBox = styled.div`
+  padding-top: 5px;
+`;
 
 const Recipe = styled.div`
   display: flex;
@@ -388,8 +371,11 @@ const StepDiv = styled.div`
 `;
 
 const FavoriteDiv = styled.div`
+  margin-top: 15px;
+  align-items: center;
+  justify-content: center;
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   width: 15%;
   position: absolute;
   top: 50%;
@@ -397,40 +383,6 @@ const FavoriteDiv = styled.div`
 `;
 
 const FavText = styled.p``;
-
-const FavoriteIt = styled.button`
-  background-color: white;
-  margin-right: 5px;
-  padding-top: 3px;
-  cursor: pointer;
-  &:active {
-    outline: none;
-  }
-  &:focus {
-    outline: none;
-  }
-  &:active {
-    transform: translateY(2px);
-    outline: none;
-  }
-`;
-
-const UnfavoriteIt = styled.button`
-  background-color: white;
-  margin-right: 5px;
-  padding-top: 3px;
-  cursor: pointer;
-  &:active {
-    outline: none;
-  }
-  &:focus {
-    outline: none;
-  }
-  &:active {
-    transform: translateY(2px);
-    outline: none;
-  }
-`;
 
 const TriedDiv = styled.div`
   width: 25%;

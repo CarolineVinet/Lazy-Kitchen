@@ -76,7 +76,6 @@ const SignUp = () => {
 
       <SignUpButton
         onClick={() => {
-          console.log("data incoming");
           setAllFieldsNotFilledError(false);
 
           if (!firstName || !lastName || !email || !username || !password) {
@@ -102,7 +101,6 @@ const SignUp = () => {
                 return res.json();
               })
               .then((data) => {
-                console.log("RETURNING DATA SIGNUP LINE 74 ::", data);
                 if (data.status === 400) {
                   setExistingUserError(true);
                   setLastName("");
@@ -111,7 +109,6 @@ const SignUp = () => {
                   setEmail("");
                   setPassword("");
                 } else if (data.status === 201) {
-                  console.log("user created!");
                   setCurrentUser(data.user);
                   setFirstTimeModalVisible(true);
                   setFirstTimePopUpVisible(true);

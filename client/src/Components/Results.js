@@ -5,51 +5,64 @@ import RecipeTile from "./RecipeSmall";
 import { BasicResultsContext } from "./BasicResultsContext";
 import { Link } from "react-router-dom";
 import resultsBackground from "../assets/resultsbackground.jpg";
+import Spinner from "./Spinner";
 
 const Results = () => {
   const { recipeResults } = useContext(BasicResultsContext);
   const [hasResults, setHasResults] = React.useState(false);
+  const [loadingStatus, setLoadingStatus] = React.useState("loading");
 
   React.useEffect(() => {
-    console.log(recipeResults);
     if (recipeResults.length > 0) {
       setHasResults(true);
     } else {
       setHasResults(false);
     }
+    setLoadingStatus("ready");
   }, [recipeResults]);
 
   return (
     <>
-      <Body>
-        <NavBar />
-        {/* <Button>
-          <ProfileLink to="/profile"> My Profile</ProfileLink>
-        </Button> */}
+      {loadingStatus === "ready" ? (
+        <Body>
+          <NavBar />
 
-        <ResultsText>Your search results</ResultsText>
+          <ResultsText>Your search results</ResultsText>
 
-        <BackButton>
-          <HomeLink to="/homepage">Try a different search</HomeLink>
-        </BackButton>
-        <Wrapper>
-          <Recipes>
-            {hasResults ? (
-              recipeResults.map((recipe) => {
-                return <RecipeTile key={recipe.id} recipe={recipe} />;
-              })
-            ) : (
-              <NoResults>
-                We're sorry, we couldn't find a recipe based on the search
-                criteria you entered.<br></br> Maybe try something different..
-              </NoResults>
-            )}
-          </Recipes>
-        </Wrapper>
-      </Body>
+          <BackButton>
+            <HomeLink to="/homepage">Try a different search</HomeLink>
+          </BackButton>
+          <Wrapper>
+            <Recipes>
+              {hasResults ? (
+                recipeResults.map((recipe) => {
+                  return <RecipeTile key={recipe.id} recipe={recipe} />;
+                })
+              ) : (
+                <NoResults>
+                  We're sorry, we couldn't find a recipe based on the search
+                  criteria you entered.<br></br> Maybe try something different..
+                </NoResults>
+              )}
+            </Recipes>
+          </Wrapper>
+        </Body>
+      ) : (
+        <SpinnerContainer>
+          <Spinner />
+        </SpinnerContainer>
+      )}
     </>
   );
 };
+
+const SpinnerContainer = styled.div`
+  height: 100vh;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+`;
 
 const Body = styled.div`
   background-image: url(${resultsBackground});

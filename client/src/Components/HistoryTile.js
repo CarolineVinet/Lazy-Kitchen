@@ -4,12 +4,10 @@ import { Link } from "react-router-dom";
 import { CurrentUserContext } from "./CurrentUserContext";
 
 const HistoryTile = ({ recipe }) => {
-  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  const { currentUser } = useContext(CurrentUserContext);
   const [isLiked, setIsLiked] = React.useState(false);
 
   React.useEffect(() => {
-    console.log(recipe.id);
-    console.log(currentUser.history);
     const matchingRecipe = currentUser.history.find(
       (item) => item.recipeId === recipe.id.toString()
     );

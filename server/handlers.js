@@ -89,9 +89,6 @@ const handleGetBasicRecipe = (req, res) => {
   const excludeIngredients = req.query.avoid
     ? `&excludeIngredients=${req.query.avoid}`
     : "";
-  const lazyState = req.query.lazy;
-
-  console.log("diet stuff :: ", diet, intolerances, excludeIngredients);
 
   fetch(
     `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?query=${query}${diet}${intolerances}${excludeIngredients}`,
@@ -108,7 +105,6 @@ const handleGetBasicRecipe = (req, res) => {
       return response.json();
     })
     .then((data) => {
-      console.log(typeof data);
       const results = data.results;
 
       if (req.query.lazy === "energized") {
@@ -176,7 +172,6 @@ const handleRecipeByIngredients = (req, res) => {
   const resultsArr = [];
   try {
     const ingredients = req.query.search;
-    console.log("diet stuff line 159 :: ", req.query);
     const diet = req.query.diet ? `&diet=${req.query.diet}` : "";
     const intolerances = req.query.allergies
       ? `&intolerances=${req.query.allergies}`
@@ -184,8 +179,6 @@ const handleRecipeByIngredients = (req, res) => {
     const excludeIngredients = req.query.avoid
       ? `&excludeIngredients=${req.query.avoid}`
       : "";
-
-    console.log("diet stuff :: ", diet, intolerances, excludeIngredients);
 
     fetch(
       `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/searchComplex?number=12&ranking=1&ignorePantry=false&includeIngredients=${ingredients}${diet}${intolerances}${excludeIngredients}`,
@@ -203,8 +196,6 @@ const handleRecipeByIngredients = (req, res) => {
         return response.json();
       })
       .then((data) => {
-        console.log("first success", data.results.length);
-
         if (data.results.length === 0) {
           res.status(200).json([]);
         }
@@ -233,7 +224,6 @@ const handleRecipeByIngredients = (req, res) => {
                   resultsArr.push(responseData);
                 }
                 count++;
-                console.log("success number :: ", count);
 
                 if (count >= data.results.length) {
                   resolve();
@@ -242,7 +232,7 @@ const handleRecipeByIngredients = (req, res) => {
           });
         }).then(() => {
           const results = resultsArr;
-          console.log("final success");
+
           if (req.query.lazy === "energized") {
             results.sort((a, b) => {
               return b.readyInMinutes - a.readyInMinutes;
@@ -265,7 +255,6 @@ const handleRecipeByIngredients = (req, res) => {
         });
       });
   } catch (e) {
-    console.log("error :: ", e);
     res.status(500).json({});
   }
 };
@@ -281,7 +270,7 @@ const handleFavorite = async (req, res) => {
     const newFavorites = [];
 
     await db.collection("lazyusers").findOne(query, async (err, result) => {
-      if (result.favorites.inludes(req.body.recipeId)) {
+      if (result.favorites.includes(req.body.recipeId)) {
         newFavorites.push(...result.favorites);
       } else {
         newFavorites.push(...result.favorites, req.body.recipeId);
@@ -292,14 +281,13 @@ const handleFavorite = async (req, res) => {
       };
 
       const r = await db.collection("lazyusers").updateOne(query, newValues);
-      console.log(r.modifiedCount);
+
       assert.equal(1, r.matchedCount);
       assert.equal(1, r.modifiedCount);
       res.status(200).json(newFavorites);
       client.close();
     });
   } catch (e) {
-    console.log(e);
     client.close();
     res.status(500).json(e);
   }
@@ -327,14 +315,13 @@ const handleUnfavorite = async (req, res) => {
       };
 
       const r = await db.collection("lazyusers").updateOne(query, newValues);
-      console.log(r.modifiedCount);
+
       assert.equal(1, r.matchedCount);
       assert.equal(1, r.modifiedCount);
       client.close();
       res.status(200).json(newFavorites);
     });
   } catch (e) {
-    console.log(e);
     client.close();
     res.status(500).json(e);
   }
@@ -407,14 +394,13 @@ const handleTriedIt = async (req, res) => {
       };
 
       const r = await db.collection("lazyusers").updateOne(query, newValues);
-      console.log(r.modifiedCount);
+
       assert.equal(1, r.matchedCount);
       assert.equal(1, r.modifiedCount);
       client.close();
       res.status(200).json(newHistory);
     });
   } catch (e) {
-    console.log(e);
     client.close();
     res.status(500).json(e);
   }
@@ -428,7 +414,6 @@ const handleGetUserHistory = async (req, res) => {
     let count = 0;
 
     history.forEach((recipeId) => {
-      console.log(recipeId);
       fetch(
         `https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/${recipeId}/information`,
         {
@@ -466,8 +451,6 @@ const handleUpdateUser = async (req, res) => {
 
     const query = { _id: req.body.userId };
 
-    console.log("user update line 435 :: ", req.body);
-
     const newValues = {
       $set: {
         allergies: req.body.allergies,
@@ -477,7 +460,7 @@ const handleUpdateUser = async (req, res) => {
     };
 
     const r = await db.collection("lazyusers").updateOne(query, newValues);
-    console.log(r.modifiedCount);
+
     assert.equal(1, r.matchedCount);
     assert.equal(1, r.modifiedCount);
     client.close();
@@ -487,7 +470,6 @@ const handleUpdateUser = async (req, res) => {
       avoid: req.body.avoid,
     });
   } catch (e) {
-    console.log(e);
     client.close();
     res.status(500).json(e);
   }
@@ -501,7 +483,6 @@ const handleGetAllReviews = async (req, res) => {
 
   const reviews = await db.collection("reviews").find().toArray();
 
-  console.log("handlers line 469 ::: ", reviews);
   client.close();
   res.status(200).json(reviews);
 };

@@ -5,7 +5,7 @@ import { FaSpinner } from "react-icons/fa";
 const Spinner = () => {
   return (
     <SpinnerIcon>
-      <FaSpinner />
+      <FaSpinner style={{ height: "50px", width: "50px" }} />
     </SpinnerIcon>
   );
 };
@@ -14,14 +14,12 @@ const rotation = keyframes`
 from{
     transform:rotate(0deg);
 }
-to{
+to{ 
     transform:rotate(360deg);
 }
 `;
 
 const SpinnerIcon = styled.div`
-  height: 20px;
-  width: 20px;
   justify-content: center;
   align-items: center;
   animation: ${rotation} 1000ms;

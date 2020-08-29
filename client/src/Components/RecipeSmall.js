@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-// import Heart from "./Heart";
+import Heart from "./Heart";
 
 const RecipeTile = ({ recipe }) => {
   const imageSrc =
@@ -13,15 +13,24 @@ const RecipeTile = ({ recipe }) => {
   return (
     <Recipe>
       <RecipeLink to={`/results/${recipe.id}`}>
+        <FaveDiv>
+          <Heart id={recipe.id} />
+        </FaveDiv>
         <InnerRecipe style={{ backgroundImage: `url(${imageSrc})` }}>
           <RecipeFormat>{recipe.title}</RecipeFormat>
           <RecipeTime>Prep Time : {recipe.readyInMinutes}mins.</RecipeTime>
-          {/* <Heart id={recipe.id} />; */}
         </InnerRecipe>
       </RecipeLink>
     </Recipe>
   );
 };
+
+const FaveDiv = styled.div`
+  z-index: 2;
+  width: 60px;
+  position: absolute;
+  left: 90%;
+`;
 
 const Recipe = styled.div`
   box-shadow: 1px 1px 10px grey;
