@@ -1,12 +1,28 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { CurrentUserContext } from "./CurrentUserContext";
 
-const DietModal = () => {
+const DietModal = ({ onCancel, setSavedVisible }) => {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const [dietList, setDietList] = React.useState([]);
   const [allergyList, setAllergyList] = React.useState([]);
   const [avoidList, setAvoidList] = React.useState("");
+
+  React.useEffect(() => {
+    if (currentUser.diet && currentUser.diet.length > 0) {
+      setDietList(currentUser.diet);
+    }
+  }, [currentUser.diet]);
+  React.useEffect(() => {
+    if (currentUser.allergies && currentUser.allergies.length > 0) {
+      setAllergyList(currentUser.allergies);
+    }
+  }, [currentUser.allergies]);
+  React.useEffect(() => {
+    if (currentUser.avoid) {
+      setAvoidList(currentUser.avoid);
+    }
+  }, [currentUser.avoid]);
 
   const dietListOnChange = (dietType) => {
     if (!dietList.includes(dietType)) {
@@ -15,6 +31,7 @@ const DietModal = () => {
       const index = dietList.findIndex((item) => item === dietType);
       delete dietList[index];
       console.log(dietList);
+      setDietList([...dietList]);
     }
   };
 
@@ -25,6 +42,7 @@ const DietModal = () => {
       const index = allergyList.findIndex((item) => item === allergy);
       delete allergyList[index];
       console.log(allergyList);
+      setAllergyList([...allergyList]);
     }
   };
 
@@ -40,6 +58,7 @@ const DietModal = () => {
               }}
               type="radio"
               name="diet"
+              checked={dietList.includes("vegetarian")}
             ></RadioInput>{" "}
             Vegetarian
           </CheckItem>
@@ -50,6 +69,7 @@ const DietModal = () => {
               }}
               type="radio"
               name="diet"
+              checked={dietList.includes("vegan")}
             ></RadioInput>{" "}
             Vegan
           </CheckItem>
@@ -60,6 +80,7 @@ const DietModal = () => {
               }}
               type="radio"
               name="diet"
+              checked={dietList.includes("ovo vegetarian")}
             ></RadioInput>{" "}
             Ovo-Vegetarian
           </CheckItem>
@@ -70,6 +91,7 @@ const DietModal = () => {
               }}
               type="radio"
               name="diet"
+              checked={dietList.includes("lacto vegetarian")}
             ></RadioInput>{" "}
             Lacto-Vegetarian
           </CheckItem>
@@ -80,6 +102,7 @@ const DietModal = () => {
               }}
               type="radio"
               name="diet"
+              checked={dietList.includes("pescetarian")}
             ></RadioInput>{" "}
             Pescetarian
           </CheckItem>
@@ -90,6 +113,7 @@ const DietModal = () => {
               }}
               type="radio"
               name="diet"
+              checked={dietList.length === 0}
             ></RadioInput>{" "}
             None
           </CheckItem>
@@ -105,6 +129,7 @@ const DietModal = () => {
                     allergyListOnChange("dairy");
                   }}
                   type="checkbox"
+                  checked={allergyList.includes("dairy")}
                 ></RadioInput>{" "}
                 Dairy
               </CheckItem>
@@ -114,6 +139,7 @@ const DietModal = () => {
                     allergyListOnChange("egg");
                   }}
                   type="checkbox"
+                  checked={allergyList.includes("egg")}
                 ></RadioInput>{" "}
                 Egg
               </CheckItem>
@@ -123,6 +149,7 @@ const DietModal = () => {
                     allergyListOnChange("gluten");
                   }}
                   type="checkbox"
+                  checked={allergyList.includes("gluten")}
                 ></RadioInput>{" "}
                 Gluten
               </CheckItem>
@@ -132,6 +159,7 @@ const DietModal = () => {
                     allergyListOnChange("wheat");
                   }}
                   type="checkbox"
+                  checked={allergyList.includes("wheat")}
                 ></RadioInput>{" "}
                 Wheat
               </CheckItem>
@@ -141,6 +169,7 @@ const DietModal = () => {
                     allergyListOnChange("shellfish");
                   }}
                   type="checkbox"
+                  checked={allergyList.includes("shellfish")}
                 ></RadioInput>{" "}
                 Shellfish
               </CheckItem>
@@ -150,6 +179,7 @@ const DietModal = () => {
                     allergyListOnChange("peanuts");
                   }}
                   type="checkbox"
+                  checked={allergyList.includes("peanuts")}
                 ></RadioInput>{" "}
                 Peanuts
               </CheckItem>
@@ -161,6 +191,7 @@ const DietModal = () => {
                     allergyListOnChange("nuts");
                   }}
                   type="checkbox"
+                  checked={allergyList.includes("nuts")}
                 ></RadioInput>{" "}
                 Nuts
               </CheckItem>
@@ -170,6 +201,7 @@ const DietModal = () => {
                     allergyListOnChange("soy");
                   }}
                   type="checkbox"
+                  checked={allergyList.includes("soy")}
                 ></RadioInput>{" "}
                 Soy
               </CheckItem>
@@ -179,6 +211,7 @@ const DietModal = () => {
                     allergyListOnChange("sesame");
                   }}
                   type="checkbox"
+                  checked={allergyList.includes("sesame")}
                 ></RadioInput>{" "}
                 Sesame
               </CheckItem>
@@ -196,6 +229,7 @@ const DietModal = () => {
             }}
             type="text"
             placeholder="ex: cilantro, mushrooms, etc"
+            value={avoidList}
           ></Input>
         </InputDiv>
 
@@ -219,20 +253,22 @@ const DietModal = () => {
                 return response.json();
               })
               .then((data) => {
-                //SET SELECTIONS TO NULL//
-                //DISPLAY CONFIRMATION MESSAGE
-
                 setCurrentUser({
                   ...currentUser,
                   allergies: data.allergies,
                   diet: data.diet,
                   avoid: data.avoid,
                 });
+                setSavedVisible(true);
+                setTimeout(() => {
+                  setSavedVisible(false);
+                }, 2500);
               });
           }}
         >
           Save
         </Save>
+        <Cancel onClick={onCancel}>Close</Cancel>
       </AvoidDiv>
     </Body>
   );
@@ -242,11 +278,12 @@ const Body = styled.div`
   box-shadow: 1px 1px 10px #808080ab;
   border-radius: 8px;
   margin: 15px;
-  width: 26%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: white;
 `;
 
 const Wrapper = styled.div`
@@ -296,8 +333,10 @@ const AvoidDiv = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  justify-content: left;
+  justify-content: space-evenly;
   margin-top: 5px;
+  background-color: white;
+  align-items: center;
 `;
 const InputDiv = styled.div`
   display: flex;
@@ -330,13 +369,31 @@ const Input = styled.input`
 `;
 
 const Save = styled.button`
-  padding-top: 25px;
-  padding-left: 45px;
-  font-weight: bold;
-  background-color: white;
+  padding: 5px 7px;
+  border-radius: 20px;
+  box-shadow: 1px 1px 5px grey;
   cursor: pointer;
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
+    opacity: 0.8;
+  }
+  &:focus {
+    outline: none;
+  }
+  &:active {
+    transform: translateY(2px);
+    outline: none;
+  }
+`;
+
+const Cancel = styled.button`
+  padding: 5px 7px;
+  border-radius: 20px;
+  box-shadow: 1px 1px 5px grey;
+  cursor: pointer;
+  &:hover {
+    text-decoration: none;
+    opacity: 0.8;
   }
   &:focus {
     outline: none;

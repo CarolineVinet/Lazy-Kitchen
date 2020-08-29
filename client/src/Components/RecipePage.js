@@ -8,7 +8,6 @@ import { ReviewsContext } from "./ReviewsContext";
 import ReviewTile from "./ReviewTile";
 import ReviewSection from "./LeaveReview";
 import marble from "../assets/resultsbackground.jpg";
-// import Heart from "./Heart";
 
 const RecipePage = () => {
   const [currentRecipe, setCurrentRecipe] = React.useState({});
@@ -16,6 +15,33 @@ const RecipePage = () => {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   const [toggleHeart, setToggleHeart] = React.useState(false);
   const { reviews, setReviews } = useContext(ReviewsContext);
+  const [currentRecipeReviews, setCurrentRecipeReviews] = React.useState([]);
+  const [wasLiked, setWasLiked] = React.useState(false);
+  const [wasDisliked, setWasDisliked] = React.useState(false);
+
+  React.useEffect(() => {
+    const matchingRecipe = currentUser.history.find((recipe) => {
+      return recipe.recipeId === id;
+    });
+
+    if (matchingRecipe.isLiked === true) {
+      setWasLiked(true);
+      setWasDisliked(false);
+    } else if (matchingRecipe.isLiked === false) {
+      setWasDisliked(true);
+      setWasLiked(false);
+    }
+  }, [currentUser.history]);
+
+  React.useEffect(() => {
+    const currentReviews = reviews.filter((review) => {
+      if (review.recipeId === parseInt(id)) {
+        return review;
+      }
+    });
+
+    setCurrentRecipeReviews(currentReviews);
+  }, [reviews]);
 
   React.useEffect(() => {
     fetch(`/getrecipe/${id}`, {
@@ -176,19 +202,43 @@ const RecipePage = () => {
         <TriedDiv>
           Tried it already? let us know if you<br></br>
           <LovedIt
+            style={
+              wasLiked
+                ? {
+                    backgroundColor: "#f2c2ca",
+                    cursor: "default",
+                    color: "black",
+                  }
+                : {}
+            }
+            disabled={wasLiked}
             onClick={() => {
               setLikedDisliked(true);
+              setWasLiked(true);
+              setWasDisliked(false);
             }}
           >
             loved it
           </LovedIt>{" "}
           or
           <HatedIt
+            style={
+              wasDisliked
+                ? {
+                    backgroundColor: "#f2c2ca",
+                    cursor: "default",
+                    color: "black",
+                  }
+                : {}
+            }
+            disabled={wasDisliked}
             onClick={() => {
               setLikedDisliked(false);
+              setWasDisliked(true);
+              setWasLiked(false);
             }}
           >
-            not
+            didn't
           </HatedIt>
           .
         </TriedDiv>
@@ -198,11 +248,13 @@ const RecipePage = () => {
             See what other users thought of this recipe
           </RatingsTitle>
           <Rating>
-            {reviews.map((review, i) => {
-              if (review.recipeId === parseInt(id)) {
+            {currentRecipeReviews.length > 0 ? (
+              currentRecipeReviews.map((review, i) => {
                 return <ReviewTile key={i} review={review} />;
-              }
-            })}
+              })
+            ) : (
+              <NoReviews>No reviews yet.</NoReviews>
+            )}
           </Rating>
 
           <ReviewSection recipeId={parseInt(id)} />
@@ -211,6 +263,8 @@ const RecipePage = () => {
     </>
   );
 };
+
+const NoReviews = styled.div``;
 
 const Recipe = styled.div`
   display: flex;
@@ -224,6 +278,19 @@ const BackButton = styled.button`
   top: 40%;
   left: 2%;
   text-decoration: none;
+  background-color: white;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    text-decoration: none;
+    opacity: 0.8;
+  }
+  &:active {
+    transform: translateY(2px);
+    outline: none;
+  }
 `;
 
 const HomeButton = styled.button`
@@ -231,6 +298,19 @@ const HomeButton = styled.button`
   top: 45%;
   left: 2%;
   text-decoration: none;
+  background-color: white;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    text-decoration: none;
+    opacity: 0.8;
+  }
+  &:active {
+    transform: translateY(2px);
+    outline: none;
+  }
 `;
 
 const ImageHeader = styled.div`
@@ -366,6 +446,7 @@ const LovedIt = styled.button`
   border-radius: 20px;
   padding-left: 7px;
   padding-right: 7px;
+  box-shadow: 1px 1px 5px grey;
   cursor: pointer;
   &:active {
     outline: none;
@@ -383,6 +464,8 @@ const HatedIt = styled.button`
   border-radius: 24px;
   padding-left: 7px;
   padding-right: 7px;
+  margin-left: 5px;
+  box-shadow: 1px 1px 5px grey;
   cursor: pointer;
   &:active {
     outline: none;
@@ -407,6 +490,7 @@ const RatingWrapper = styled.div`
 
 const RatingsTitle = styled.div`
   font-size: 30px;
+  margin-bottom: 15px;
 `;
 
 const Rating = styled.div`

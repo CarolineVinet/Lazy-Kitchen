@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import NavBar from "./Navbar";
 import { CurrentUserContext } from "./CurrentUserContext";
 import { Link } from "react-router-dom";
@@ -10,21 +10,26 @@ import profileHeader from "../assets/profileheader.jpg";
 import userpic from "../assets/userprofilepic.png";
 import { ReviewsContext } from "./ReviewsContext";
 import ReviewTile from "./ReviewTile";
+import marble from "../assets/resultsbackground.jpg";
+import DietPopUp from "./DietPopUp";
+import avatar from "../assets/avatar.png";
 
 const Profile = () => {
   const {
     currentUser,
     firstTimeModalVisible,
     setFirstTimeModalVisible,
+    firstTimePopUpVisible,
   } = useContext(CurrentUserContext);
   const { reviews } = useContext(ReviewsContext);
   const [userFavorites, setUserFavorites] = React.useState([]);
   const [userHistory, setUserHistory] = React.useState([]);
   const [modalVisible, setModalVisible] = React.useState(firstTimeModalVisible);
-
+  const [popUpVisible, setPopUpVisible] = React.useState(firstTimePopUpVisible);
   const [favoritesVisible, setFavoritesVisible] = React.useState(false);
   const [historyVisible, setHistoryVisible] = React.useState(false);
   const [reviewsVisible, setReviewsVisible] = React.useState(false);
+  const [savedVisible, setSavedVisible] = React.useState(false);
 
   React.useEffect(() => {
     if (currentUser.favorites && currentUser.favorites.length > 0) {
@@ -65,114 +70,138 @@ const Profile = () => {
 
   return (
     <>
-      <NavBar></NavBar>
-      <Button>
-        <HomeLink to="/homepage">Homepage</HomeLink>
-      </Button>
+      {popUpVisible ? (
+        <DietPopUp setPopUpVisible={setPopUpVisible}></DietPopUp>
+      ) : null}
+      <Body>
+        <NavBar></NavBar>
+        <Button>
+          <HomeLink to="/homepage">Homepage</HomeLink>
+        </Button>
 
-      <Main>
-        <TopDiv>
-          <HeaderImage></HeaderImage>
-          <UserPictureDiv></UserPictureDiv>
-          <NameDiv>
-            {currentUser.firstName} {currentUser.lastName}
-          </NameDiv>
-        </TopDiv>
+        <Main>
+          <TopDiv>
+            <HeaderImage></HeaderImage>
+            <UserPictureDiv></UserPictureDiv>
+            <NameDiv>
+              {currentUser.firstName} {currentUser.lastName}
+            </NameDiv>
+          </TopDiv>
+          <ProfilePage>
+            <TabsBar>
+              <Favorites
+                onClick={() => {
+                  setFavoritesVisible(!favoritesVisible);
+                  setHistoryVisible(false);
+                  setReviewsVisible(false);
+                  setModalVisible(false);
+                }}
+              >
+                Your favorite recipes
+              </Favorites>
 
-        <ProfilePage>
-          <TabsBar>
-            <Favorites
-              onClick={() => {
-                setFavoritesVisible(!favoritesVisible);
-                setHistoryVisible(false);
-                setReviewsVisible(false);
-                setModalVisible(false);
-              }}
-            >
-              Your favorite recipes
-            </Favorites>
+              <RecipeHistory
+                onClick={() => {
+                  setHistoryVisible(!historyVisible);
+                  setFavoritesVisible(false);
+                  setReviewsVisible(false);
+                  setModalVisible(false);
+                }}
+              >
+                Your recipe history
+              </RecipeHistory>
 
-            <RecipeHistory
-              onClick={() => {
-                setHistoryVisible(!historyVisible);
-                setFavoritesVisible(false);
-                setReviewsVisible(false);
-                setModalVisible(false);
-              }}
-            >
-              Your recipe history
-            </RecipeHistory>
+              <Settings
+                onClick={(event) => {
+                  event.preventDefault();
+                  setModalVisible(true);
+                  setHistoryVisible(false);
+                  setFavoritesVisible(false);
+                  setReviewsVisible(false);
+                }}
+              >
+                Edit your dietary preferences
+              </Settings>
 
-            <Settings
-              onClick={(event) => {
-                event.preventDefault();
-                setModalVisible(true);
-                setHistoryVisible(false);
-                setFavoritesVisible(false);
-                setReviewsVisible(false);
-              }}
-            >
-              Edit your dietary preferences
-            </Settings>
+              <Reviews
+                onClick={() => {
+                  setReviewsVisible(!reviewsVisible);
+                  setHistoryVisible(false);
+                  setModalVisible(false);
+                  setFavoritesVisible(false);
+                }}
+              >
+                Your reviews
+              </Reviews>
+            </TabsBar>
+            <Content>
+              {favoritesVisible === true ? (
+                <FavoriteList>
+                  {userFavorites.map((favorite) => {
+                    return <RecipeTile recipe={favorite} />;
+                  })}
+                </FavoriteList>
+              ) : null}
+              {historyVisible === true ? (
+                <RecipeList>
+                  {userHistory
+                    ? userHistory.map((triedrecipe) => {
+                        return <HistoryTile recipe={triedrecipe} />;
+                      })
+                    : null}
+                </RecipeList>
+              ) : null}
+              {modalVisible ? (
+                <ModalDiv>
+                  <DietModal
+                    setSavedVisible={setSavedVisible}
+                    onCancel={() => {
+                      setModalVisible(false);
+                      setFirstTimeModalVisible(false);
+                    }}
+                  />
+                </ModalDiv>
+              ) : null}
+              {reviewsVisible === true ? (
+                <ReviewsList>
+                  {reviews.map((review) => {
+                    if (review.author === currentUser.username) {
+                      return <ReviewTile review={review}></ReviewTile>;
+                    }
+                  })}
+                </ReviewsList>
+              ) : null}
 
-            <Reviews
-              onClick={() => {
-                setReviewsVisible(!reviewsVisible);
-                setHistoryVisible(false);
-                setModalVisible(false);
-                setFavoritesVisible(false);
-              }}
-            >
-              Your reviews
-            </Reviews>
-          </TabsBar>
-          <Content>
-            {favoritesVisible === true ? (
-              <FavoriteList>
-                {userFavorites.map((favorite) => {
-                  return <RecipeTile recipe={favorite} />;
-                })}
-              </FavoriteList>
-            ) : null}
-            {historyVisible === true ? (
-              <RecipeList>
-                {userHistory
-                  ? userHistory.map((triedrecipe) => {
-                      return <HistoryTile recipe={triedrecipe} />;
-                    })
-                  : null}
-              </RecipeList>
-            ) : null}
-
-            {modalVisible ? (
-              <ModalDiv>
-                <CloseButton
-                  onClick={() => {
-                    setModalVisible(false);
-                    setFirstTimeModalVisible(false);
-                  }}
-                >
-                  X
-                </CloseButton>
-                <DietModal />
-              </ModalDiv>
-            ) : null}
-
-            {reviewsVisible === true ? (
-              <ReviewsList>
-                {reviews.map((review) => {
-                  if (review.author === currentUser.username) {
-                    return <ReviewTile review={review}></ReviewTile>;
-                  }
-                })}
-              </ReviewsList>
-            ) : null}
-          </Content>
-        </ProfilePage>
-      </Main>
+              {savedVisible ? (
+                <UpdatedMessage>Your preferences were saved!</UpdatedMessage>
+              ) : null}
+            </Content>
+          </ProfilePage>
+        </Main>
+      </Body>
     </>
   );
 };
+
+const fade = keyframes`
+  from{opacity:1}
+  to{opacity:0}
+  `;
+
+const UpdatedMessage = styled.div`
+  background-color: limegreen;
+  width: 215px;
+  padding: 7px;
+  border-radius: 22px;
+  box-shadow: 1px 1px 5px grey;
+  position: absolute;
+  left: 69%;
+  top: 90%;
+  color: white;
+  z-index: 99;
+  animation: ${fade} 1s 1.5s;
+  animation-iteration-count: 1;
+`;
 
 const TopDiv = styled.div``;
 
@@ -181,6 +210,7 @@ const NameDiv = styled.div`
   flex-direction: row;
   padding-left: 25%;
   font-size: 50px;
+  background-color: white;
 `;
 
 const Main = styled.div`
@@ -199,7 +229,7 @@ const HeaderImage = styled.div`
 `;
 
 const UserPictureDiv = styled.div`
-  background-image: url(${userpic});
+  background-image: url(${avatar});
   background-position: center;
   border-radius: 50%;
   border: white solid 8px;
@@ -230,6 +260,7 @@ const TabsBar = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  background-color: white;
   align-items: center;
   height: 50px;
   font-size: 20px;
@@ -315,7 +346,7 @@ const FavoriteList = styled.div`
   border-top: 1px grey solid;
   border-right: 1px grey solid;
   text-align: center;
-  margin-top: 40px;
+
   padding-top: 40px;
 `;
 
@@ -324,25 +355,39 @@ const RecipeList = styled.div`
   border-top: 1px grey solid;
   border-right: 1px grey solid;
   text-align: center;
-  margin-top: 40px;
   padding-top: 40px;
   width: 50%;
   position: relative;
-  left: 42%;
+  left: 35%;
 `;
 
 const ModalDiv = styled.div`
   position: relative;
   left: 60%;
+  width: 30%;
 `;
 
-const CloseButton = styled.button``;
-
-const ReviewsList = styled.div``;
+const ReviewsList = styled.div`
+  width: 60%;
+  position: relative;
+  left: 23%;
+  padding-top: 30px;
+`;
 
 const Content = styled.div`
   justify-content: center;
   align-items: center;
+  background: transparent;
+`;
+
+const Body = styled.div`
+  background-image: url(${marble});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
 `;
 
 export default Profile;

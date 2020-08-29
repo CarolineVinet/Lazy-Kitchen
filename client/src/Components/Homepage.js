@@ -6,7 +6,8 @@ import { BasicResultsContext } from "./BasicResultsContext";
 import { CurrentUserContext } from "./CurrentUserContext";
 import LazyFilter from "./LazyFilter";
 import { LazyContext } from "./LazyContext";
-import homebackground from "../assets/homebackground.jpg";
+// import homebackground from "../assets/homebackground.jpg";
+import searchbackground from "../assets/searchbackground.jpg";
 
 const Homepage = () => {
   const { currentUser } = useContext(CurrentUserContext);
@@ -26,12 +27,12 @@ const Homepage = () => {
 
         <BigTitle>Recipe Finder</BigTitle>
         <Text>
-          <Title>Two easy ways to get inspired</Title>
+          <Title>Two ways to get inspired</Title>
           <SearchesDiv>
             <SearchOne>
               <HThree>Quick Search</HThree>
               <Instructions>
-                Craving something? <br></br> Have a specific dish in mind?
+                Have a specific dish in mind?
                 <br></br>
                 Enter at least one keyword to launch your search.
               </Instructions>
@@ -68,9 +69,9 @@ const Homepage = () => {
             <SearchTwo>
               <HThree>Search by ingredients</HThree>
               <Instructions>
-                Looking to empty out your fridge? <br></br>
-                Enter the ingredients you have on hand <br></br>(separated by
-                comas) and see what you can create!
+                Want to use up what you have? <br></br>Enter the ingredients you
+                have on hand <br></br>(separated by comas) and see what you can
+                create!
               </Instructions>
               <Wrapper>
                 <IngredientInput
@@ -112,17 +113,13 @@ const Homepage = () => {
             </SearchTwo>
           </SearchesDiv>
           <FilterDiv>
-            <HThree>Low on energy? Try our lazy filter!</HThree>
+            <HThree>How are you feeling?</HThree>
+            <LazyFilter />
             <LazyInstructions>
-              Applying the lazy filter to your search, will sort your results by
-              preparation time.
-              <br></br> You dont have to use the filter if you aren't feeling
-              particularily lazy or energized.<br></br> You can leave the meter
-              empty or, select the second option from the left for default
-              sorting.
+              We'll sort your search results by preparation time based on your
+              current energy level.
             </LazyInstructions>
           </FilterDiv>
-          <LazyFilter />
         </Text>
       </Body>
     </>
@@ -137,7 +134,7 @@ const Wrapper = styled.div`
 `;
 
 const Body = styled.div`
-  background-image: url(${homebackground});
+  background-image: url(${searchbackground});
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -147,12 +144,14 @@ const Body = styled.div`
 `;
 
 const Text = styled.div`
-  background-color: white;
+  background-color: #ffffff9c;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   width: 60%;
   position: relative;
   left: 20%;
+  top: 5%;
   box-shadow: 1px 1px 8px grey;
 `;
 
@@ -171,6 +170,7 @@ const SearchesDiv = styled.div`
 `;
 
 const SearchOne = styled.div`
+  background-color: white;
   text-align: center;
   justify-content: center;
   padding: 10px;
@@ -178,6 +178,7 @@ const SearchOne = styled.div`
   box-shadow: 1px 1px 10px #80808080;
 `;
 const SearchTwo = styled.div`
+  background-color: white;
   text-align: center;
   justify-content: center;
   padding: 10px;

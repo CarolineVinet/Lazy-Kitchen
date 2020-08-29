@@ -6,6 +6,9 @@ const CurrentUserProvider = ({ children }) => {
   const [firstTimeModalVisible, setFirstTimeModalVisible] = React.useState(
     false
   );
+  const [firstTimePopUpVisible, setFirstTimePopUpVisible] = React.useState(
+    false
+  );
 
   return (
     <CurrentUserContext.Provider
@@ -14,6 +17,8 @@ const CurrentUserProvider = ({ children }) => {
         setCurrentUser,
         firstTimeModalVisible,
         setFirstTimeModalVisible,
+        firstTimePopUpVisible,
+        setFirstTimePopUpVisible,
       }}
     >
       {children}

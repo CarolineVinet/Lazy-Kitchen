@@ -17,12 +17,13 @@ const ReviewSection = ({ recipeId }) => {
         rows="4"
         cols="40"
         placeholder="Write your review here!"
+        value={reviewBody}
         onChange={(event) => {
           setReviewBody(event.target.value);
         }}
       ></ReviewInput>
       <RatingDiv>
-        <p>Your Rating : </p>
+        <YourRating>Your Rating : </YourRating>
         <div className="rating">
           <input
             onChange={(event) => {
@@ -92,6 +93,7 @@ const ReviewSection = ({ recipeId }) => {
               return response.json();
             })
             .then((data) => {
+              setReviewBody("");
               setReviews([...reviews, data]);
             });
         }}
@@ -101,6 +103,11 @@ const ReviewSection = ({ recipeId }) => {
     </LeaveReviewDiv>
   );
 };
+
+const YourRating = styled.p`
+  font-size: 20px;
+  margin-right: 10px;
+`;
 
 const LeaveReviewDiv = styled.div`
   display: flex;
@@ -112,6 +119,7 @@ const LeaveReviewDiv = styled.div`
 
 const ReviewInput = styled.textarea`
   border: 1px #00000036 solid;
+  margin-top: 30px;
   resize: none;
   padding-left: 5px;
   border-radius: 5px;
@@ -123,10 +131,26 @@ const ReviewInput = styled.textarea`
 const RatingDiv = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
 `;
 
 const Button = styled.button`
   width: 100px;
+  padding: 5px;
+  border-radius: 22px;
+  box-shadow: 1px 1px 5px grey;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    text-decoration: none;
+    opacity: 0.8;
+  }
+  &:active {
+    transform: translateY(2px);
+    outline: none;
+  }
 `;
 
 export default ReviewSection;

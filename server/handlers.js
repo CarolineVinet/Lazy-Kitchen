@@ -281,7 +281,11 @@ const handleFavorite = async (req, res) => {
     const newFavorites = [];
 
     await db.collection("lazyusers").findOne(query, async (err, result) => {
-      newFavorites.push(...result.favorites, req.body.recipeId);
+      if (result.favorites.inludes(req.body.recipeId)) {
+        newFavorites.push(...result.favorites);
+      } else {
+        newFavorites.push(...result.favorites, req.body.recipeId);
+      }
 
       const newValues = {
         $set: { favorites: newFavorites },
@@ -384,10 +388,19 @@ const handleTriedIt = async (req, res) => {
     const newHistory = [];
 
     await db.collection("lazyusers").findOne(query, async (err, result) => {
-      newHistory.push(...result.history, {
-        recipeId: req.body.recipeId,
-        isLiked: req.body.isLiked,
-      });
+      const existingIndex = result.history.findIndex(
+        (item) => item.recipeId === req.body.recipeId
+      );
+
+      if (existingIndex === -1) {
+        newHistory.push(...result.history, {
+          recipeId: req.body.recipeId,
+          isLiked: req.body.isLiked,
+        });
+      } else {
+        result.history[existingIndex].isLiked = req.body.isLiked;
+        newHistory.push(...result.history);
+      }
 
       const newValues = {
         $set: { history: newHistory },

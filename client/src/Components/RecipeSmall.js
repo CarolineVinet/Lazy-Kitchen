@@ -12,13 +12,13 @@ const RecipeTile = ({ recipe }) => {
 
   return (
     <Recipe>
-      <InnerRecipe style={{ backgroundImage: `url(${imageSrc})` }}>
-        <RecipeLink to={`/results/${recipe.id}`}>
+      <RecipeLink to={`/results/${recipe.id}`}>
+        <InnerRecipe style={{ backgroundImage: `url(${imageSrc})` }}>
           <RecipeFormat>{recipe.title}</RecipeFormat>
           <RecipeTime>Prep Time : {recipe.readyInMinutes}mins.</RecipeTime>
           {/* <Heart id={recipe.id} />; */}
-        </RecipeLink>
-      </InnerRecipe>
+        </InnerRecipe>
+      </RecipeLink>
     </Recipe>
   );
 };

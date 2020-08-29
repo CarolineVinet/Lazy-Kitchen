@@ -11,12 +11,10 @@ const Gate = () => {
         <HOne>Lazy Kitchen</HOne>
         <GateTwo>
           <Intro>
-            Don't know what to cook? Feeling lazy? <br></br>We've got you!
+            Feeling lazy? Uninspired? <br></br>
+            Can't decide what to cook?<br></br>
           </Intro>
-          <Introo>
-            Tell us how much energy you have and we'll deliver awesome recipes
-            tailored to your dietary profile!
-          </Introo>
+          We've got you!
           <HTwo>Sign up to access our recipe generator!</HTwo>
           <Instructions>It's quick & easy and completely free!</Instructions>
           <SignUp />
@@ -54,35 +52,29 @@ const Text = styled.div`
 
 const HOne = styled.h1`
   font-size: 55px;
-  margin-bottom: 40px;
+  margin-bottom: 25px;
   background: transparent;
 `;
 
 const Intro = styled.p`
   text-align: center;
   margin-top: 15px;
-  margin-bottom: 15px;
-  font-size: 25px;
-`;
-
-const Introo = styled.p`
-  text-align: center;
-  margin-top: 25px;
-  margin-bottom: 25px;
-  font-size: 20px;
+  margin-bottom: 20px;
+  font-size: 27px;
+  line-height: 1.5;
 `;
 
 const HTwo = styled.p`
   text-align: center;
-  margin-top: 15px;
-  font-size: 25px;
+  margin-top: 20px;
+  font-size: 20px;
 `;
 
 const Instructions = styled.p`
   text-align: center;
   margin-top: 10px;
-  margin-bottom: 15px;
-  font-size: 18px;
+  margin-bottom: 22px;
+  font-size: 15px;
 `;
 
 const GateTwo = styled.div`
@@ -93,8 +85,8 @@ const GateTwo = styled.div`
   background-color: white;
   border-radius: 10px;
   line-height: 1;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
   box-shadow: 1px 1px 8px grey;
 `;
 
@@ -105,7 +97,7 @@ const LinkDiv = styled(Link)`
 
 const SigninRedirect = styled.p`
   font-size: 16px;
-  margin-top: 15px;
+  margin-top: 18px;
   margin-bottom: 15px;
 `;
 

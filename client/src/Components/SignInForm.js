@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 import { CurrentUserContext } from "./CurrentUserContext";
 import signinImage from "../assets/signinimage.jpg";
@@ -74,7 +74,7 @@ const SignIn = () => {
 
           {userDoesntExist ? (
             <ErrorMessage>
-              Hmm... <br></br>The email you entered isn't in our database.
+              The email you entered isn't in our database.
               <br></br>
               <LinkDiv to="/">Sign up here!</LinkDiv>
             </ErrorMessage>
@@ -125,6 +125,11 @@ const Instruction = styled.p`
   padding: 15px;
 `;
 
+const appear = keyframes`
+from{opacity:0}
+to{opacity:1}
+`;
+
 const Form = styled.div`
   display: flex;
   flex-direction: column;
@@ -140,6 +145,7 @@ const Greeting = styled.h1`
   font-size: 60px;
   margin-bottom: 60px;
   background: transparent;
+  animation: ${appear} 3s;
 `;
 
 const Input = styled.input`
@@ -177,6 +183,7 @@ const Button = styled.button`
 const ErrorMessage = styled.div`
   color: red;
   text-align: center;
+  margin-top: 15px;
 `;
 
 const LinkDiv = styled(Link)`

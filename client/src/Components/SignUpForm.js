@@ -13,9 +13,11 @@ const SignUp = () => {
   const [allFieldsNotFilledError, setAllFieldsNotFilledError] = React.useState(
     false
   );
-  const { setCurrentUser, setFirstTimeModalVisible } = useContext(
-    CurrentUserContext
-  );
+  const {
+    setCurrentUser,
+    setFirstTimeModalVisible,
+    setFirstTimePopUpVisible,
+  } = useContext(CurrentUserContext);
   const history = useHistory();
 
   return (
@@ -112,6 +114,7 @@ const SignUp = () => {
                   console.log("user created!");
                   setCurrentUser(data.user);
                   setFirstTimeModalVisible(true);
+                  setFirstTimePopUpVisible(true);
                   history.push("/profile");
                 }
               });
@@ -153,8 +156,9 @@ const Input = styled.input`
 `;
 
 const SignUpButton = styled.button`
+  margin-top: 15px;
   width: 70px;
-  height: 40px;
+  height: 30px;
   border-radius: 22px;
   padding-right: 7px;
   padding-left: 7px;
@@ -175,7 +179,8 @@ const SignUpButton = styled.button`
 
 const ErrorMessage = styled.div`
   color: red;
-  font-size: 18px;
+  margin-top: 15px;
+  font-size: 16px;
 `;
 
 export default SignUp;

@@ -1,26 +1,53 @@
 import React from "react";
 import styled from "styled-components";
+import { AiOutlineStar } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const ReviewTile = ({ review }) => {
+  const [stars, setStars] = React.useState([]);
+
+  React.useEffect(() => {
+    const starArr = [];
+
+    for (let i = 1; i <= parseInt(review.rating); i++) {
+      starArr.push("entry");
+    }
+
+    setStars(starArr);
+  }, [review.rating]);
+
   return (
-    <Review>
-      <Top>
-        <ReviewAuthor>Review left by {review.author}</ReviewAuthor>
-        <ReviewRating>{review.rating}</ReviewRating>
-      </Top>
-      <Bottom>
-        <ReviewDate>{review.date}</ReviewDate>
-        <ReviewBody>{review.body}</ReviewBody>
-      </Bottom>
-    </Review>
+    <LinkToRecipe to={`/results/${review.recipeId}`}>
+      <Review>
+        <Top>
+          <ReviewAuthor>Review left by {review.author}</ReviewAuthor>
+          <ReviewRating>
+            {stars.map((star) => {
+              return <AiOutlineStar />;
+            })}
+          </ReviewRating>
+        </Top>
+        <Bottom>
+          <ReviewDate>{review.date}</ReviewDate>
+          <ReviewBody>{review.body}</ReviewBody>
+        </Bottom>
+      </Review>
+    </LinkToRecipe>
   );
 };
+
+const LinkToRecipe = styled(Link)`
+  text-decoration: none;
+  cursor: pointer;
+`;
 
 const Review = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
   margin-bottom: 10px;
+  background-color: white;
+  box-shadow: 1px 1px 5px grey;
 `;
 
 const Top = styled.div`
@@ -36,7 +63,9 @@ const ReviewAuthor = styled.div`
   font-style: italic;
 `;
 
-const ReviewRating = styled.div``;
+const ReviewRating = styled.div`
+  color: black;
+`;
 
 const Bottom = styled.div`
   display: flex;
