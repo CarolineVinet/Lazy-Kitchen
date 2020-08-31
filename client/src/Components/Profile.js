@@ -249,12 +249,12 @@ const ProfilePage = styled.div``;
 const Button = styled.button`
   z-index: 8;
   position: absolute;
-  top: 0px;
+  top: -1px;
   left: 1300px;
   padding: 20px;
   background-color: white;
   &:hover {
-    box-shadow: 1px 1px 10px #80808085;
+    text-decoration: underline;
   }
 `;
 

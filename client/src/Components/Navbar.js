@@ -29,8 +29,10 @@ const NavBar = () => {
 
 const LogButton = styled.button`
   background-color: white;
-  margin-right: 7px;
-  margin-left: 7px;
+  margin-right: 25px;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const LogOut = styled(Link)`
@@ -70,7 +72,7 @@ const Button = styled.button`
   margin-right: 30px;
   background-color: white;
   &:hover {
-    box-shadow: 1px 1px 10px #80808085;
+    text-decoration: underline;
   }
 `;
 
