@@ -5,11 +5,18 @@ import logo from "../assets/logolazy.png";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
-  const { currentUser } = useContext(CurrentUserContext);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
 
   return (
     <Bar>
       <Wrapper>
+        <LogButton
+          onClick={() => {
+            setCurrentUser({});
+          }}
+        >
+          <LogOut to="/">Logout</LogOut>
+        </LogButton>
         <Button>
           <ProfileLink to="/profile"> My Profile</ProfileLink>
         </Button>
@@ -19,6 +26,16 @@ const NavBar = () => {
     </Bar>
   );
 };
+
+const LogButton = styled.button`
+  background-color: white;
+  margin-right: 7px;
+  margin-left: 7px;
+`;
+
+const LogOut = styled(Link)`
+  text-decoration: none;
+`;
 
 const Bar = styled.div`
   border-bottom: 1px #8080803d solid;
@@ -58,7 +75,8 @@ const Button = styled.button`
 `;
 
 const Greeting = styled.div`
-  font-size: 18px;
+  font-size: 20px;
+  margin-left: 20px;
 `;
 
 export default NavBar;
