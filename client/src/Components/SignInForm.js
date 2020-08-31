@@ -104,6 +104,11 @@ const Main = styled.div`
   background-size: cover;
   height: 100vh;
   width: 100%;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
 `;
 
 const Text = styled.div`
@@ -117,6 +122,11 @@ const Text = styled.div`
   width: 30%;
   left: 65%;
   top: 23%;
+  @media (max-width: 768px) {
+    position: relative;
+    left: 35%;
+    top: 5%;
+  }
 `;
 
 const Instruction = styled.p`
@@ -146,6 +156,11 @@ const Greeting = styled.h1`
   margin-bottom: 60px;
   background: transparent;
   animation: ${appear} 3s;
+  @media (max-width: 768px) {
+    text-align: center;
+    font-size: 50px;
+    text-shadow: 3px 3px 6px white;
+  }
 `;
 
 const Input = styled.input`

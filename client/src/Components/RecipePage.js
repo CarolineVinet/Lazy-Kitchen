@@ -314,6 +314,11 @@ const RoundImage = styled.div`
   position: relative;
   margin-top: -10%;
   background-position: bottom;
+  @media (max-width: 768px) {
+    height: 200px;
+    width: 200px;
+    margin-top: -30%;
+  }
 `;
 
 const ResultsLink = styled(Link)`
@@ -343,6 +348,10 @@ const TextWrapper = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
   width: 90%;
+  @media (max-width: 768px) {
+    display: block;
+    padding: 10px;
+  }
 `;
 
 const Title = styled.h1`
@@ -350,6 +359,9 @@ const Title = styled.h1`
   margin: 10px;
   text-align: center;
   justify-content: center;
+  @media (max-width: 768px) {
+    margin-top: 20px;
+  }
 `;
 
 const IngredientsDiv = styled.div`
@@ -380,9 +392,17 @@ const FavoriteDiv = styled.div`
   position: absolute;
   top: 50%;
   left: 80%;
+  @media (max-width: 768px) {
+    position: absolute;
+    top: 40%;
+  }
 `;
 
-const FavText = styled.p``;
+const FavText = styled.p`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
 
 const TriedDiv = styled.div`
   width: 25%;
@@ -392,6 +412,9 @@ const TriedDiv = styled.div`
   position: absolute;
   top: 40%;
   left: 70%;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const LovedIt = styled.button`
@@ -438,6 +461,10 @@ const RatingWrapper = styled.div`
   align-items: center;
   padding: 20px;
   width: 50%;
+  @media (max-width: 768px) {
+    width: auto;
+    margin: auto;
+  }
 `;
 
 const RatingsTitle = styled.div`

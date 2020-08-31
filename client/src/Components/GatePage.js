@@ -35,6 +35,9 @@ const GatePage = styled.div`
   background-size: cover;
   height: 100vh;
   width: 100%;
+  @media (max-width: 768px) {
+    height: 100%;
+  }
 `;
 
 const Text = styled.div`
@@ -54,6 +57,9 @@ const HOne = styled.h1`
   font-size: 55px;
   margin-bottom: 25px;
   background: transparent;
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 `;
 
 const Intro = styled.p`
@@ -99,6 +105,9 @@ const SigninRedirect = styled.p`
   font-size: 16px;
   margin-top: 18px;
   margin-bottom: 15px;
+  @media (max-width: 768px) {
+    text-align: center;
+  }
 `;
 
 export default Gate;

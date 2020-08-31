@@ -30,6 +30,10 @@ const FaveDiv = styled.div`
   width: 60px;
   position: absolute;
   left: 90%;
+  @media (max-width: 768px) {
+    position: absolute;
+    left: unset;
+  }
 `;
 
 const Recipe = styled.div`

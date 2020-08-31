@@ -37,6 +37,9 @@ const LogButton = styled.button`
 
 const LogOut = styled(Link)`
   text-decoration: none;
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 const Bar = styled.div`
@@ -74,11 +77,17 @@ const Button = styled.button`
   &:hover {
     text-decoration: underline;
   }
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `;
 
 const Greeting = styled.div`
   font-size: 20px;
   margin-left: 20px;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export default NavBar;

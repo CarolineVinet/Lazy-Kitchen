@@ -38,6 +38,7 @@ const ReviewTile = ({ review }) => {
 
 const LinkToRecipe = styled(Link)`
   text-decoration: none;
+  color: black;
   cursor: pointer;
 `;
 

@@ -85,6 +85,14 @@ const ResultsText = styled.p`
   width: 40%;
   position: relative;
   left: 30%;
+  @media (max-width: 768px) {
+    text-align: center;
+    font-size: 45px;
+    padding-left: 0px;
+    width: 90%;
+    position: relative;
+    left: 5%;
+  }
 `;
 
 const Recipes = styled.div`
@@ -102,6 +110,12 @@ const Recipes = styled.div`
   text-align: center;
   font-size: 20px;
   font-weight: bold;
+  @media (max-width: 768px) {
+    position: relative;
+    left: 5%;
+    width: 80%;
+    padding-top: 25px;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -115,6 +129,13 @@ const Wrapper = styled.div`
   top: 0%;
   padding: 20px;
   box-shadow: 2px 2px 10px grey;
+  @media (max-width: 768px) {
+    width: 100%;
+    position: relative;
+    left: unset;
+    padding: unset;
+    box-shadow: unset;
+  }
 `;
 
 const BackButton = styled.button`
@@ -125,6 +146,10 @@ const BackButton = styled.button`
   border-radius: 20px;
   padding-left: 7px;
   padding-right: 7px;
+  @media (max-width: 768px) {
+    position: relative;
+    left: 25%;
+  }
 `;
 
 const HomeLink = styled(Link)`

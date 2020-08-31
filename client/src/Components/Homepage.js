@@ -6,7 +6,7 @@ import { BasicResultsContext } from "./BasicResultsContext";
 import { CurrentUserContext } from "./CurrentUserContext";
 import LazyFilter from "./LazyFilter";
 import { LazyContext } from "./LazyContext";
-// import homebackground from "../assets/homebackground.jpg";
+
 import searchbackground from "../assets/searchbackground.jpg";
 
 const Homepage = () => {
@@ -21,9 +21,6 @@ const Homepage = () => {
     <>
       <Body>
         <NavBar></NavBar>
-        {/* <Button>
-          <ProfileLink to="/profile"> My Profile</ProfileLink>
-        </Button> */}
 
         <BigTitle>Recipe Finder</BigTitle>
         <Text>
@@ -136,6 +133,9 @@ const Body = styled.div`
   height: 100vh;
   width: 100%;
   align-items: center;
+  @media (max-width: 768px) {
+    height: 100%;
+  }
 `;
 
 const Text = styled.div`
@@ -148,6 +148,12 @@ const Text = styled.div`
   left: 20%;
   top: 5%;
   box-shadow: 1px 1px 8px grey;
+  @media (max-width: 768px) {
+    width: 75%;
+    position: relative;
+    left: 12.5%;
+    margin-bottom: 20px;
+  }
 `;
 
 const BigTitle = styled.h1`
@@ -155,6 +161,9 @@ const BigTitle = styled.h1`
   margin-bottom: 15px;
   background: transparent;
   text-align: center;
+  @media (max-width: 768px) {
+    font-size: 45px;
+  }
 `;
 
 const SearchesDiv = styled.div`
@@ -162,6 +171,10 @@ const SearchesDiv = styled.div`
   flex-direction: row;
   justify-content: space-evenly;
   margin-bottom: 15px;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const SearchOne = styled.div`
@@ -171,6 +184,9 @@ const SearchOne = styled.div`
   padding: 10px;
   border-radius: 8px;
   box-shadow: 1px 1px 10px #80808080;
+  @media (max-width: 768px) {
+    margin-bottom: inherit;
+  }
 `;
 const SearchTwo = styled.div`
   background-color: white;
@@ -179,6 +195,9 @@ const SearchTwo = styled.div`
   padding: 10px;
   border-radius: 8px;
   box-shadow: 1px 1px 10px #80808080;
+  @media (max-width: 768px) {
+    margin-bottom: inherit;
+  }
 `;
 
 const Title = styled.h2`

@@ -238,10 +238,10 @@ const UserPictureDiv = styled.div`
   border: white solid 8px;
   z-index: 9;
   position: absolute;
-  left: 3%;
+  left: unset;
   top: 20%;
-  width: 280px;
-  height: 280px;
+  width: 250px;
+  height: 250px;
 `;
 
 const ProfilePage = styled.div``;
@@ -262,11 +262,12 @@ const TabsBar = styled.div`
   border: 1px grey solid;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-evenly;
   background-color: white;
   align-items: center;
   height: 50px;
   font-size: 20px;
+  margin-left: 15%;
 `;
 
 const HomeLink = styled(Link)`
@@ -275,8 +276,8 @@ const HomeLink = styled(Link)`
 
 const Favorites = styled.button`
   background-color: white;
-  margin-right: 50px;
-  margin-left: 50px;
+  /* margin-right: 50px;
+  margin-left: 50px; */
   cursor: pointer;
   &:hover {
     box-shadow: 1px 1px 10px #80808085;
@@ -292,8 +293,8 @@ const Favorites = styled.button`
 
 const RecipeHistory = styled.button`
   background-color: white;
-  margin-right: 50px;
-  margin-left: 50px;
+  /* margin-right: 50px;
+  margin-left: 50px; */
   cursor: pointer;
   &:hover {
     box-shadow: 1px 1px 10px #80808085;
@@ -309,8 +310,8 @@ const RecipeHistory = styled.button`
 
 const Settings = styled.button`
   background-color: white;
-  margin-right: 50px;
-  margin-left: 50px;
+  /* margin-right: 50px;
+  margin-left: 50px; */
   cursor: pointer;
   &:hover {
     box-shadow: 1px 1px 10px #80808085;
@@ -326,8 +327,8 @@ const Settings = styled.button`
 
 const Reviews = styled.button`
   background-color: white;
-  margin-right: 50px;
-  margin-left: 50px;
+  /* margin-right: 50px;
+  margin-left: 50px; */
   cursor: pointer;
   &:hover {
     box-shadow: 1px 1px 10px #80808085;
