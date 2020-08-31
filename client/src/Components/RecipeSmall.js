@@ -63,8 +63,8 @@ const InnerRecipe = styled.div`
 const RecipeFormat = styled.div`
   text-decoration: none;
   text-shadow: 1px 1px 4px black;
-  font-size: 22px;
-  padding-top: 40px;
+  font-size: 24px;
+  padding-top: 50px;
   font-weight: bold;
   color: white;
   z-index: 2;
@@ -78,6 +78,7 @@ const RecipeFormat = styled.div`
 const RecipeTime = styled.div`
   text-decoration: none;
   text-shadow: 1px 1px 4px black;
+  font-weight: bold;
   color: white;
   font-size: 22px;
   z-index: 2;

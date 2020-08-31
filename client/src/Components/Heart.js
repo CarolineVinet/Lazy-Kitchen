@@ -89,8 +89,9 @@ const HeartDiv = styled.div`
 const FavoriteIt = styled.button`
   background-color: #ffffffc9;
   height: 32px;
-  padding-right: 7px;
-  padding-left: 7px;
+  /* padding-right: 7px;
+  padding-left: 7px; */
+  padding: 7px;
   border-radius: 22px;
   cursor: pointer;
   &:hover {
@@ -109,8 +110,9 @@ const FavoriteIt = styled.button`
 const UnfavoriteIt = styled.button`
   background-color: #ffffffc9;
   height: 32px;
-  padding-right: 7px;
-  padding-left: 7px;
+  /* padding-right: 7px;
+  padding-left: 7px; */
+  padding: 7px;
   border-radius: 22px;
   cursor: pointer;
   &:hover {

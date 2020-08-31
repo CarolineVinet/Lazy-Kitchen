@@ -1,6 +1,6 @@
 const { MongoClient } = require("mongodb");
 require("dotenv").config();
-const { MONGO_URI } = process.env;
+const { MONGO_URI, RAPID_API_KEY } = process.env;
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
 const assert = require("assert");
@@ -97,7 +97,7 @@ const handleGetBasicRecipe = (req, res) => {
       headers: {
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-        "x-rapidapi-key": "0743ec8629mshf67977e8c63b981p158834jsn37aa89ebfd81",
+        "x-rapidapi-key": RAPID_API_KEY,
       },
     }
   )
@@ -137,7 +137,7 @@ const handleRecipeById = (req, res) => {
       headers: {
         "x-rapidapi-host":
           "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-        "x-rapidapi-key": "0743ec8629mshf67977e8c63b981p158834jsn37aa89ebfd81",
+        "x-rapidapi-key": RAPID_API_KEY,
       },
     }
   )
@@ -152,8 +152,7 @@ const handleRecipeById = (req, res) => {
           headers: {
             "x-rapidapi-host":
               "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-            "x-rapidapi-key":
-              "0743ec8629mshf67977e8c63b981p158834jsn37aa89ebfd81",
+            "x-rapidapi-key": RAPID_API_KEY,
           },
         }
       )
@@ -187,8 +186,7 @@ const handleRecipeByIngredients = (req, res) => {
         headers: {
           "x-rapidapi-host":
             "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-          "x-rapidapi-key":
-            "0743ec8629mshf67977e8c63b981p158834jsn37aa89ebfd81",
+          "x-rapidapi-key": RAPID_API_KEY,
         },
       }
     )
@@ -211,8 +209,7 @@ const handleRecipeByIngredients = (req, res) => {
                 headers: {
                   "x-rapidapi-host":
                     "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-                  "x-rapidapi-key":
-                    "0743ec8629mshf67977e8c63b981p158834jsn37aa89ebfd81",
+                  "x-rapidapi-key": RAPID_API_KEY,
                 },
               }
             )
@@ -342,8 +339,7 @@ const handleGetAllFavorites = async (req, res) => {
           headers: {
             "x-rapidapi-host":
               "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-            "x-rapidapi-key":
-              "0743ec8629mshf67977e8c63b981p158834jsn37aa89ebfd81",
+            "x-rapidapi-key": RAPID_API_KEY,
           },
         }
       )
@@ -421,8 +417,7 @@ const handleGetUserHistory = async (req, res) => {
           headers: {
             "x-rapidapi-host":
               "spoonacular-recipe-food-nutrition-v1.p.rapidapi.com",
-            "x-rapidapi-key":
-              "0743ec8629mshf67977e8c63b981p158834jsn37aa89ebfd81",
+            "x-rapidapi-key": RAPID_API_KEY,
           },
         }
       )

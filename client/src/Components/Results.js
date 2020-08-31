@@ -113,7 +113,6 @@ const Wrapper = styled.div`
   position: relative;
   left: 10%;
   top: 0%;
-  line-height: 2;
   padding: 20px;
   box-shadow: 2px 2px 10px grey;
 `;
