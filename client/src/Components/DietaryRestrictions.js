@@ -226,46 +226,56 @@ const DietModal = ({ onCancel, setSavedVisible }) => {
           ></Input>
         </InputDiv>
 
-        <Save
-          onClick={(event) => {
-            event.preventDefault();
+        <ButtonWrapper>
+          <Save
+            onClick={(event) => {
+              event.preventDefault();
 
-            //DISPLAY SPINNER///
+              //DISPLAY SPINNER///
 
-            fetch("/updateuser", {
-              method: "PUT",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                userId: currentUser._id,
-                allergies: allergyList,
-                diet: dietList,
-                avoid: avoidList,
-              }),
-            })
-              .then((response) => {
-                return response.json();
+              fetch("/updateuser", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  userId: currentUser._id,
+                  allergies: allergyList,
+                  diet: dietList,
+                  avoid: avoidList,
+                }),
               })
-              .then((data) => {
-                setCurrentUser({
-                  ...currentUser,
-                  allergies: data.allergies,
-                  diet: data.diet,
-                  avoid: data.avoid,
+                .then((response) => {
+                  return response.json();
+                })
+                .then((data) => {
+                  setCurrentUser({
+                    ...currentUser,
+                    allergies: data.allergies,
+                    diet: data.diet,
+                    avoid: data.avoid,
+                  });
+                  setSavedVisible(true);
+                  setTimeout(() => {
+                    setSavedVisible(false);
+                  }, 2500);
                 });
-                setSavedVisible(true);
-                setTimeout(() => {
-                  setSavedVisible(false);
-                }, 2500);
-              });
-          }}
-        >
-          Save
-        </Save>
-        <Cancel onClick={onCancel}>Close</Cancel>
+            }}
+          >
+            Save
+          </Save>
+          <Cancel onClick={onCancel}>Close</Cancel>
+        </ButtonWrapper>
       </AvoidDiv>
     </Body>
   );
 };
+
+const ButtonWrapper = styled.div`
+  display: flex;
+
+  @media (max-width: 768px) {
+    padding-bottom: 10px;
+  }
+`;
 
 const Body = styled.div`
   box-shadow: 1px 1px 10px #808080ab;
@@ -277,6 +287,10 @@ const Body = styled.div`
   align-items: center;
   justify-content: center;
   background-color: white;
+
+  @media (max-width: 768px) {
+    margin: unset;
+  }
 `;
 
 const Wrapper = styled.div`
@@ -330,6 +344,10 @@ const AvoidDiv = styled.div`
   margin-top: 5px;
   background-color: white;
   align-items: center;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 const InputDiv = styled.div`
   display: flex;

@@ -4,7 +4,7 @@ import { CurrentUserContext } from "./CurrentUserContext";
 import logo from "../assets/logolazy.png";
 import { Link } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = ({ isOnProfile }) => {
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
 
   return (
@@ -18,7 +18,11 @@ const NavBar = () => {
           <LogOut to="/">Logout</LogOut>
         </LogButton>
         <Button>
-          <ProfileLink to="/profile"> My Profile</ProfileLink>
+          {!!isOnProfile ? (
+            <HomeLink to="/homepage">Homepage</HomeLink>
+          ) : (
+            <ProfileLink to="/profile"> My Profile</ProfileLink>
+          )}
         </Button>
         <Logo src={logo}></Logo>
       </Wrapper>
@@ -64,6 +68,10 @@ const Logo = styled.img`
 
 const Wrapper = styled.div`
   display: flex;
+`;
+
+const HomeLink = styled(Link)`
+  text-decoration: none;
 `;
 
 const ProfileLink = styled(Link)`

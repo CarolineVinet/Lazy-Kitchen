@@ -13,6 +13,7 @@ import ReviewTile from "./ReviewTile";
 import marble from "../assets/resultsbackground.jpg";
 import DietPopUp from "./DietPopUp";
 import avatar from "../assets/avatar.png";
+import Spinner from "./Spinner";
 
 const Profile = () => {
   const {
@@ -30,6 +31,13 @@ const Profile = () => {
   const [historyVisible, setHistoryVisible] = React.useState(false);
   const [reviewsVisible, setReviewsVisible] = React.useState(false);
   const [savedVisible, setSavedVisible] = React.useState(false);
+  const [profileStatus, setProfileStatus] = React.useState("loading");
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setProfileStatus("ready");
+    }, 1000);
+  }, []);
 
   React.useEffect(() => {
     if (currentUser.favorites && currentUser.favorites.length > 0) {
@@ -69,122 +77,145 @@ const Profile = () => {
 
   return (
     <>
-      {popUpVisible ? (
-        <DietPopUp setPopUpVisible={setPopUpVisible}></DietPopUp>
-      ) : null}
-      <Body>
-        <NavBar></NavBar>
-        <Button>
-          <HomeLink to="/homepage">Homepage</HomeLink>
-        </Button>
+      {profileStatus === "ready" ? (
+        <>
+          {popUpVisible ? (
+            <DietPopUp setPopUpVisible={setPopUpVisible}></DietPopUp>
+          ) : null}
+          <Body>
+            <NavBar isOnProfile={true} />
 
-        <Main>
-          <TopDiv>
-            <HeaderImage></HeaderImage>
-            <UserPictureDiv></UserPictureDiv>
-            <NameDiv>
-              {currentUser.firstName} {currentUser.lastName}
-            </NameDiv>
-          </TopDiv>
-          <ProfilePage>
-            <TabsBar>
-              <Favorites
-                onClick={() => {
-                  setFavoritesVisible(!favoritesVisible);
-                  setHistoryVisible(false);
-                  setReviewsVisible(false);
-                  setModalVisible(false);
-                }}
-              >
-                Your favorite recipes
-              </Favorites>
-
-              <RecipeHistory
-                onClick={() => {
-                  setHistoryVisible(!historyVisible);
-                  setFavoritesVisible(false);
-                  setReviewsVisible(false);
-                  setModalVisible(false);
-                }}
-              >
-                Your recipe history
-              </RecipeHistory>
-
-              <Settings
-                onClick={(event) => {
-                  event.preventDefault();
-                  setModalVisible(true);
-                  setHistoryVisible(false);
-                  setFavoritesVisible(false);
-                  setReviewsVisible(false);
-                }}
-              >
-                Edit your dietary preferences
-              </Settings>
-
-              <Reviews
-                onClick={() => {
-                  setReviewsVisible(!reviewsVisible);
-                  setHistoryVisible(false);
-                  setModalVisible(false);
-                  setFavoritesVisible(false);
-                }}
-              >
-                Your reviews
-              </Reviews>
-            </TabsBar>
-            <Content>
-              {favoritesVisible === true ? (
-                <FavoriteList>
-                  {userFavorites.map((favorite) => {
-                    if (
-                      currentUser.favorites.includes(favorite.id.toString())
-                    ) {
-                      return <RecipeTile recipe={favorite} />;
-                    }
-                  })}
-                </FavoriteList>
-              ) : null}
-              {historyVisible === true ? (
-                <RecipeList>
-                  {userHistory
-                    ? userHistory.map((triedrecipe) => {
-                        return <HistoryTile recipe={triedrecipe} />;
-                      })
-                    : null}
-                </RecipeList>
-              ) : null}
-              {modalVisible ? (
-                <ModalDiv>
-                  <DietModal
-                    setSavedVisible={setSavedVisible}
-                    onCancel={() => {
+            <Main>
+              <TopDiv>
+                <HeaderImage></HeaderImage>
+                <UserPictureDiv></UserPictureDiv>
+                <NameDiv>
+                  {currentUser.firstName} {currentUser.lastName}
+                </NameDiv>
+              </TopDiv>
+              <ProfilePage>
+                <TabsBar>
+                  <Favorites
+                    onClick={() => {
+                      setFavoritesVisible(!favoritesVisible);
+                      setHistoryVisible(false);
+                      setReviewsVisible(false);
                       setModalVisible(false);
-                      setFirstTimeModalVisible(false);
                     }}
-                  />
-                </ModalDiv>
-              ) : null}
-              {reviewsVisible === true ? (
-                <ReviewsList>
-                  {reviews.map((review) => {
-                    if (review.author === currentUser.username) {
-                      return <ReviewTile review={review}></ReviewTile>;
-                    }
-                  })}
-                </ReviewsList>
-              ) : null}
+                  >
+                    <Full>Your favorite recipes</Full>
+                    <Short>Favorites</Short>
+                  </Favorites>
 
-              {savedVisible ? (
-                <UpdatedMessage>Your preferences were saved!</UpdatedMessage>
-              ) : null}
-            </Content>
-          </ProfilePage>
-        </Main>
-      </Body>
+                  <RecipeHistory
+                    onClick={() => {
+                      setHistoryVisible(!historyVisible);
+                      setFavoritesVisible(false);
+                      setReviewsVisible(false);
+                      setModalVisible(false);
+                    }}
+                  >
+                    <Full>Your recipe history</Full>
+                    <Short>History</Short>
+                  </RecipeHistory>
+
+                  <Settings
+                    onClick={(event) => {
+                      event.preventDefault();
+                      setModalVisible(true);
+                      setHistoryVisible(false);
+                      setFavoritesVisible(false);
+                      setReviewsVisible(false);
+                    }}
+                  >
+                    <Full>Edit your dietary preferences</Full>
+                    <Short>Preferences</Short>
+                  </Settings>
+
+                  <Reviews
+                    onClick={() => {
+                      setReviewsVisible(!reviewsVisible);
+                      setHistoryVisible(false);
+                      setModalVisible(false);
+                      setFavoritesVisible(false);
+                    }}
+                  >
+                    <Full>Your reviews</Full>
+                    <Short>Reviews</Short>
+                  </Reviews>
+                </TabsBar>
+                <Content>
+                  {favoritesVisible === true ? (
+                    <FavoriteList>
+                      {userFavorites.map((favorite) => {
+                        if (
+                          currentUser.favorites.includes(favorite.id.toString())
+                        ) {
+                          return <RecipeTile recipe={favorite} />;
+                        }
+                      })}
+                    </FavoriteList>
+                  ) : null}
+                  {historyVisible === true ? (
+                    <RecipeList>
+                      {userHistory
+                        ? userHistory.map((triedrecipe) => {
+                            return <HistoryTile recipe={triedrecipe} />;
+                          })
+                        : null}
+                    </RecipeList>
+                  ) : null}
+                  {modalVisible ? (
+                    <ModalDiv>
+                      <DietModal
+                        setSavedVisible={setSavedVisible}
+                        onCancel={() => {
+                          setModalVisible(false);
+                          setFirstTimeModalVisible(false);
+                        }}
+                      />
+                    </ModalDiv>
+                  ) : null}
+                  {reviewsVisible === true ? (
+                    <ReviewsList>
+                      {reviews.map((review) => {
+                        if (review.author === currentUser.username) {
+                          return <ReviewTile review={review}></ReviewTile>;
+                        }
+                      })}
+                    </ReviewsList>
+                  ) : null}
+
+                  {savedVisible ? (
+                    <UpdatedMessage>
+                      Your preferences were saved!
+                    </UpdatedMessage>
+                  ) : null}
+                </Content>
+              </ProfilePage>
+            </Main>
+          </Body>
+        </>
+      ) : (
+        <SpinnerContainer>
+          <Spinner />
+        </SpinnerContainer>
+      )}
     </>
   );
 };
+
+const Full = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const Short = styled.div`
+  @media (min-width: 769px) {
+    display: none;
+  }
+`;
 
 const fade = keyframes`
   from{opacity:1}
@@ -204,6 +235,10 @@ const UpdatedMessage = styled.div`
   z-index: 99;
   animation: ${fade} 1s 1.5s;
   animation-iteration-count: 1;
+
+  @media (max-width: 768px) {
+    left: 20%;
+  }
 `;
 
 const TopDiv = styled.div``;
@@ -214,6 +249,11 @@ const NameDiv = styled.div`
   padding-left: 25%;
   font-size: 50px;
   background-color: white;
+  @media (max-width: 768px) {
+    font-size: 40px;
+    padding-left: unset;
+    justify-content: center;
+  }
 `;
 
 const Main = styled.div`
@@ -227,7 +267,7 @@ const HeaderImage = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   height: 25vh;
-  width: 100%;
+  /* width: 100%; */
   box-shadow: 1px 2px 6px #808080cf;
 `;
 
@@ -242,6 +282,9 @@ const UserPictureDiv = styled.div`
   top: 20%;
   width: 250px;
   height: 250px;
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const ProfilePage = styled.div``;
@@ -268,10 +311,11 @@ const TabsBar = styled.div`
   height: 50px;
   font-size: 20px;
   margin-left: 15%;
-`;
-
-const HomeLink = styled(Link)`
-  text-decoration: none;
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: unset;
+    margin-left: unset;
+  }
 `;
 
 const Favorites = styled.button`
@@ -369,6 +413,11 @@ const ModalDiv = styled.div`
   position: relative;
   left: 60%;
   width: 30%;
+
+  @media (max-width: 768px) {
+    left: unset;
+    width: unset;
+  }
 `;
 
 const ReviewsList = styled.div`
@@ -389,9 +438,20 @@ const Body = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   min-height: 100vh;
+  @media (max-widtth: 768px) {
+    min-height: 100vh;
+  }
+`;
+
+const SpinnerContainer = styled.div`
+  height: 100vh;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
 `;
 
 export default Profile;
