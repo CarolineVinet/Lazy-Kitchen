@@ -1,7 +1,11 @@
 "use strict";
 
 const express = require("express");
+const fs = require("fs");
+const multer = require("multer");
+const upload = multer({ dest: "./uploads/" });
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const morgan = require("morgan");
 const {
   handleSignUp,
@@ -33,8 +37,10 @@ express()
     );
     next();
   })
+  .use(cors())
   .use(morgan("tiny"))
   .use(express.static("./server/assets"))
+  .use(express.static("./uploads"))
   .use(bodyParser.json())
   .use(express.urlencoded({ extended: false }))
   .use("/", express.static(__dirname + "/"))
@@ -53,8 +59,22 @@ express()
   //POST
 
   .post("/signup", handleSignUp)
+  .post("/uploadFile", upload.single("profilepic"), (req, res) => {
+    res.send("200");
 
-  //PUT
+    let fileType = req.file.mimetype.split("/")[1];
+    let newFileName = req.file.filename + "." + fileType;
+
+    fs.rename(
+      `./uploads/${req.file.filename}`,
+      `./uploads/${newFileName}`,
+      function () {
+        console.log("callback");
+      }
+    );
+  })
+
+  //PUT//
 
   .put("/addfavorite", handleFavorite)
   .put("/removefavorite", handleUnfavorite)

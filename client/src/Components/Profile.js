@@ -14,6 +14,7 @@ import marble from "../assets/resultsbackground.jpg";
 import DietPopUp from "./DietPopUp";
 import avatar from "../assets/avatar.png";
 import Spinner from "./Spinner";
+import AddPicture from "./Upload";
 
 const Profile = () => {
   const {
@@ -89,6 +90,7 @@ const Profile = () => {
               <TopDiv>
                 <HeaderImage></HeaderImage>
                 <UserPictureDiv></UserPictureDiv>
+                <AddPicture></AddPicture>
                 <NameDiv>
                   {currentUser.firstName} {currentUser.lastName}
                 </NameDiv>
@@ -276,7 +278,7 @@ const UserPictureDiv = styled.div`
   background-position: center;
   border-radius: 50%;
   border: white solid 8px;
-  z-index: 9;
+  /* z-index: 9; */
   position: absolute;
   left: unset;
   top: 20%;
