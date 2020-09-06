@@ -5,6 +5,7 @@ require("es6-promise").polyfill();
 require("isomorphic-fetch");
 const assert = require("assert");
 const moment = require("moment");
+const fs = require("fs");
 
 const options = {
   useNewUrlParser: true,
@@ -38,6 +39,7 @@ const handleSignUp = async (req, res) => {
       allergies: req.body.allergies,
       diet: req.body.diet,
       avoid: req.body.avoid,
+      avatarUrl: "",
     });
     res.status(201).json({
       status: 201,
@@ -500,6 +502,46 @@ const handleAddReview = async (req, res) => {
   res.status(201).json(newReview);
 };
 
+const finishFileUpload = async (req, res) => {
+  const client = await MongoClient(MONGO_URI, options);
+
+  await client.connect();
+
+  try {
+    let fileType = req.file.mimetype.split("/")[1];
+    let newFileName = req.file.filename + "." + fileType;
+
+    fs.rename(
+      `./uploads/${req.file.filename}`,
+      `./uploads/${newFileName}`,
+      function () {
+        console.log("callback");
+      }
+    );
+
+    const db = client.db("lazychefproject");
+
+    const query = { _id: req.query.id };
+
+    const newValues = {
+      $set: {
+        avatarUrl: newFileName,
+      },
+    };
+
+    await db.collection("lazyusers").updateOne(query, newValues);
+
+    client.close();
+
+    res.status(200).json({
+      avatarUrl: newFileName,
+    });
+  } catch (e) {
+    client.close();
+    res.status(500).json(e);
+  }
+};
+
 module.exports = {
   handleSignUp,
   handleSignIn,
@@ -514,4 +556,5 @@ module.exports = {
   handleUpdateUser,
   handleGetAllReviews,
   handleAddReview,
+  finishFileUpload,
 };

@@ -2,17 +2,15 @@ import React, { useContext } from "react";
 import styled, { keyframes } from "styled-components";
 import NavBar from "./Navbar";
 import { CurrentUserContext } from "./CurrentUserContext";
-import { Link } from "react-router-dom";
 import RecipeTile from "./RecipeSmall";
 import HistoryTile from "./HistoryTile";
 import DietModal from "./DietaryRestrictions";
 import profileHeader from "../assets/profileheader.jpg";
-import userpic from "../assets/userprofilepic.png";
 import { ReviewsContext } from "./ReviewsContext";
 import ReviewTile from "./ReviewTile";
 import marble from "../assets/resultsbackground.jpg";
 import DietPopUp from "./DietPopUp";
-import avatar from "../assets/avatar.png";
+import defaultAvatar from "../assets/avatar.png";
 import Spinner from "./Spinner";
 import AddPicture from "./Upload";
 
@@ -33,6 +31,13 @@ const Profile = () => {
   const [reviewsVisible, setReviewsVisible] = React.useState(false);
   const [savedVisible, setSavedVisible] = React.useState(false);
   const [profileStatus, setProfileStatus] = React.useState("loading");
+  const [avatar, setAvatar] = React.useState(defaultAvatar);
+
+  React.useEffect(() => {
+    if (currentUser.avatarUrl) {
+      setAvatar(`/uploads/${currentUser.avatarUrl}`);
+    }
+  }, [currentUser.avatarUrl]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -89,7 +94,9 @@ const Profile = () => {
             <Main>
               <TopDiv>
                 <HeaderImage></HeaderImage>
-                <UserPictureDiv></UserPictureDiv>
+                <UserPictureDiv
+                  style={{ backgroundImage: `url(${avatar})` }}
+                ></UserPictureDiv>
                 <AddPicture></AddPicture>
                 <NameDiv>
                   {currentUser.firstName} {currentUser.lastName}
@@ -274,7 +281,6 @@ const HeaderImage = styled.div`
 `;
 
 const UserPictureDiv = styled.div`
-  background-image: url(${avatar});
   background-position: center;
   border-radius: 50%;
   border: white solid 8px;

@@ -21,6 +21,7 @@ const {
   handleUpdateUser,
   handleGetAllReviews,
   handleAddReview,
+  finishFileUpload,
 } = require("./handlers");
 
 const PORT = process.env.PORT || 4000;
@@ -59,20 +60,7 @@ express()
   //POST
 
   .post("/signup", handleSignUp)
-  .post("/uploadFile", upload.single("profilepic"), (req, res) => {
-    res.send("200");
-
-    let fileType = req.file.mimetype.split("/")[1];
-    let newFileName = req.file.filename + "." + fileType;
-
-    fs.rename(
-      `./uploads/${req.file.filename}`,
-      `./uploads/${newFileName}`,
-      function () {
-        console.log("callback");
-      }
-    );
-  })
+  .post("/uploadFile", upload.single("profilepic"), finishFileUpload)
 
   //PUT//
 
